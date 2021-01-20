@@ -1,13 +1,18 @@
 #include "Engine.h"
 #include "Window.h"
+#include "SqVM.h"
 #include <SDL.h>
 
+SqVM* sq;
 Window* window;
 
 int Engine::init()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	window = new Window();
+	sq = new SqVM();
+
+	sq->runScript("test.nut");
 
 	return 0;
 }
@@ -15,6 +20,7 @@ int Engine::init()
 void Engine::shutdown()
 {
 	delete window;
+	delete sq;
 
 	SDL_Quit();
 }

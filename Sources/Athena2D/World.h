@@ -11,7 +11,7 @@ class World
 public:
 	World();
 	
-	void tick(double deltaTime);
+	void tick(float deltaTime);
 
 	void addEntity(Entity* entity);
 	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);

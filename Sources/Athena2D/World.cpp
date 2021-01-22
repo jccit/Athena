@@ -1,13 +1,15 @@
 #include "World.h"
 #include "ComponentManager.h"
+#include "Script.h"
 #include "Sprite.h"
 
 World::World()
 {
 	REGISTER_COMPONENT(Sprite);
+	REGISTER_COMPONENT(Script);
 }
 
-void World::tick(double deltaTime)
+void World::tick(float deltaTime)
 {
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
@@ -70,5 +72,10 @@ void World::shutdown()
 	for (auto& system : systems)
 	{
 		system.reset();
+	}
+
+	for (auto& entity : entities)
+	{
+		entity.reset();
 	}
 }

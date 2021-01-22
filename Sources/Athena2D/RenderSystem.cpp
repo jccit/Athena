@@ -10,9 +10,7 @@ RenderSystem::RenderSystem()
 {
 }
 
-RenderSystem::~RenderSystem()
-{
-}
+RenderSystem::~RenderSystem() = default;
 
 void RenderSystem::init()
 {
@@ -27,11 +25,11 @@ void RenderSystem::shutdown()
 	delete win;
 }
 
-void RenderSystem::preload(std::shared_ptr<Entity> entity, double deltaTime)
+void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 {
 	std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
 
-	if (!sprite->loaded)
+	if (sprite && !sprite->loaded)
 	{
 		std::string path = "sprites/" + sprite->src;
 		SDL_Surface* imgSurface = IMG_Load(path.c_str());
@@ -43,23 +41,23 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, double deltaTime)
 	}
 }
 
-void RenderSystem::beforeUpdate(double deltaTime)
+void RenderSystem::beforeUpdate(float deltaTime)
 {
 	SDL_RenderClear(renderer);
 }
 
-void RenderSystem::update(std::shared_ptr<Entity> entity, double deltaTime)
+void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 {
 	std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
 
-	if (sprite->loaded)
+	if (sprite && sprite->loaded)
 	{
 		SDL_Rect dst = { entity->pos.x, entity->pos.y, sprite->width, sprite->height };
 		SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
 	}
 }
 
-void RenderSystem::afterUpdate(double deltaTime)
+void RenderSystem::afterUpdate(float deltaTime)
 {
 	SDL_RenderPresent(renderer);
 }

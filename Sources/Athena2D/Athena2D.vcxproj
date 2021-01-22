@@ -166,7 +166,9 @@
     <ClCompile Include="FileOutput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="ScriptSystem.cpp" />
     <ClCompile Include="SqVM.cpp" />
+    <ClCompile Include="StdOutput.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -176,9 +178,12 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FileOutput.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="ScriptSystem.h" />
     <ClInclude Include="SqVM.h" />
+    <ClInclude Include="StdOutput.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />

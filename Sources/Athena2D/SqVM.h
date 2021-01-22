@@ -1,16 +1,20 @@
 #pragma once
 
 #include <simplesquirrel/simplesquirrel.hpp>
-#include <string>
 
 class SqVM
 {
 public:
-	SqVM();
+	static SqVM& getInstance();
 	~SqVM();
 
+	void shutdown();
+	
 	void runScript(std::string path);
-private:
+
 	ssq::VM* vm;
+
+private:
+	SqVM();
 };
 

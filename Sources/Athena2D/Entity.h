@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Vec2.h"
 #include <memory>
+#include <simplesquirrel/vm.hpp>
 
 class Entity
 {
@@ -42,7 +43,22 @@ public:
 		const ComponentType cid = COMPONENT_TYPE(C);
 		return components.count(cid);
 	}
-	
+
+	void translate(float x, float y);
+	void moveTo(float x, float y);
+
+	static void expose(ssq::VM& vm)
+	{
+		ssq::Class cls = vm.addClass("Entity", ssq::Class::Ctor < Entity() > ());
+		cls.addVar("pos", &Entity::pos);
+		cls.addVar("rot", &Entity::rot);
+		cls.addVar("id", &Entity::id);
+
+		cls.addFunc("translate", &Entity::translate);
+		cls.addFunc("moveTo", &Entity::moveTo);
+	}
+
+	std::string id;
 	Vec2 pos;
 	Vec2 rot;
 

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <simplesquirrel/vm.hpp>
 
 struct Vec2
 {
@@ -14,6 +15,27 @@ struct Vec2
 		this->y = y;
 	}
 
+	Vec2 operator+(const Vec2 &a)
+	{
+		x += a.x;
+		y += a.y;
+		return *this;
+	}
+	
+	Vec2 operator+=(const Vec2& a)
+	{
+		x += a.x;
+		y += a.y;
+		return *this;
+	}
+
 	float x;
 	float y;
+
+	static void expose(ssq::VM &vm)
+	{
+		ssq::Class cls = vm.addClass("Vec2", ssq::Class::Ctor<Vec2(float, float)>());
+		cls.addVar("x", &Vec2::x);
+		cls.addVar("y", &Vec2::y);
+	}
 };

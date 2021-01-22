@@ -10,37 +10,42 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "SqVM.h"
+#include "ScriptSystem.h"
 #include "World.h"
 
 #include "RenderSystem.h"
 #include <Console/Console.h>
 #include "FileOutput.h"
+#include "StdOutput.h"
+#include "Script.h"
 #include "Sprite.h"
+#include "SqVM.h"
 
-SqVM* sq;
 World world;
 
 int Engine::init()
 {
 	Console::getInstance().registerOutput(new FileOutput());
+	Console::getInstance().registerOutput(new StdOutput());
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	
 	world.registerSystem(new RenderSystem());
-	
-	sq = new SqVM();
+	world.registerSystem(new ScriptSystem());
 
-	sq->runScript("test.nut");
-
+	SqVM::getInstance().runScript("core/EntityScript.nut");
 
 	// test
 
 	Entity* ent = new Entity();
 	Sprite* sprite = new Sprite();
+	Script* script = new Script();
 	sprite->src = "test.png";
+	script->src = "test.nut";
+	script->className = "TestEnt";
 	ent->addComponent(sprite);
+	ent->addComponent(script);
 	ent->pos = Vec2(10.0f, 10.0f);
 	world.addEntity(ent);
 	
@@ -50,8 +55,6 @@ int Engine::init()
 void Engine::shutdown()
 {
 	world.shutdown();
-
-	delete sq;
 
 	IMG_Quit();
 	SDL_Quit();
@@ -85,7 +88,7 @@ void Engine::loop()
 		}
 
 		auto elapsed = currentTime - previousTime;
-		double deltaTime = std::chrono::duration<double>(elapsed).count();
+		float deltaTime = std::chrono::duration<float>(elapsed).count();
 		previousTime = currentTime;
 
 		world.tick(deltaTime);

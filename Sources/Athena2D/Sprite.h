@@ -12,4 +12,12 @@ struct Sprite : Component
 	int height = 0;
 	
 	bool loaded = false;
+
+	~Sprite()
+	{
+		if (texture != nullptr)
+		{
+			SDL_DestroyTexture(texture);
+		}
+	}
 };

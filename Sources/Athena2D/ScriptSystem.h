@@ -1,23 +1,18 @@
 #pragma once
 
 #include "System.h"
-#include "Window.h"
 
-class RenderSystem final : public System
+class ScriptSystem : public System
 {
 public:
-	RenderSystem();
-	virtual ~RenderSystem();
+	ScriptSystem();
+	virtual ~ScriptSystem();
 
 	void init() override;
 	void shutdown() override;
-
 	void preload(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void beforeUpdate(float deltaTime) override;
 	void update(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void afterUpdate(float deltaTime) override;
-
-private:
-	Window* win;
 };
 

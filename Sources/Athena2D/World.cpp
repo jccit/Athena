@@ -71,6 +71,7 @@ void World::shutdown()
 {
 	for (auto& system : systems)
 	{
+		system->shutdown();
 		system.reset();
 	}
 

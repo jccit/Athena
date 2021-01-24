@@ -28,6 +28,8 @@ int Engine::init()
 	Console::getInstance().registerOutput(new FileOutput());
 	Console::getInstance().registerOutput(new StdOutput());
 
+	LOG("Init", "Engine");
+
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	
@@ -59,6 +61,8 @@ void Engine::shutdown()
 	IMG_Quit();
 	SDL_Quit();
 
+	LOG("So long and thanks for all the fish", "Engine");
+
 	Console::getInstance().shutdown();
 }
 
@@ -69,6 +73,8 @@ void Engine::loop()
 {
 	bool running = true;
 	SDL_Event e;
+
+	LOG_VERBOSE("Starting game loop", "Engine");
 
 	while (running)
 	{

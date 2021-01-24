@@ -3,6 +3,9 @@
 #include "Script.h"
 #include "Sprite.h"
 
+#include <Utils/Filesystem.h>
+#include <Console/Console.h>
+
 World::World()
 {
 	REGISTER_COMPONENT(Sprite);
@@ -41,12 +44,12 @@ void World::tick(float deltaTime)
 void World::addEntity(Entity* entity)
 {
 	std::shared_ptr<Entity> ptr(entity);
-	entities.push_back(std::move(ptr));
+	level.entities.push_back(std::move(ptr));
 }
 
 void World::eachEntity(std::function<void(std::shared_ptr<Entity>)> callback)
 {
-	for (auto& entity : entities)
+	for (auto& entity : level.entities)
 	{
 		callback(entity);
 	}
@@ -75,8 +78,27 @@ void World::shutdown()
 		system.reset();
 	}
 
-	for (auto& entity : entities)
-	{
-		entity.reset();
-	}
+	level.clear();
+}
+
+void World::loadLevel(const std::string &filePath)
+{
+	std::ifstream file = FS_GetFile(filePath);
+	cereal::BinaryInputArchive archive(file);
+
+	level.clear();
+
+	archive(level);
+
+	LOG("Loaded level " + filePath, "World");
+}
+
+void World::saveLevel(const std::string &filePath)
+{
+	std::ofstream file = FS_WriteStream(filePath);
+	cereal::BinaryOutputArchive archive(file);
+
+	archive(level);
+
+	LOG("Saved level " + filePath, "World");
 }

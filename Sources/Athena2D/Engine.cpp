@@ -23,6 +23,19 @@
 
 World world;
 
+struct TestStruct
+{
+	std::string id;
+	uint32_t verts;
+	std::string sprite;
+
+	template <class Archive>
+	void serialize(Archive &ar)
+	{
+		ar(id, verts, sprite);
+	}
+};
+
 int Engine::init()
 {
 	Console::getInstance().registerOutput(new FileOutput());
@@ -39,7 +52,7 @@ int Engine::init()
 	SqVM::getInstance().runScript("core/EntityScript.nut");
 
 	// test
-
+	
 	Entity* ent = new Entity();
 	Sprite* sprite = new Sprite();
 	Script* script = new Script();
@@ -49,7 +62,11 @@ int Engine::init()
 	ent->addComponent(sprite);
 	ent->addComponent(script);
 	ent->pos = Vec2(10.0f, 10.0f);
+	ent->id = "testEnt";
 	world.addEntity(ent);
+	world.saveLevel("test.lvl");
+
+	//world.loadLevel("test.lvl");
 	
 	return 0;
 }

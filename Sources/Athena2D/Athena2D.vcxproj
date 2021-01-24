@@ -82,12 +82,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Libraries\SDL2\lib\x64;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Debug;..\..\ThirdParty\squirrel\build\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\Libraries\SDL2\lib\x64;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Release;..\..\ThirdParty\squirrel\build\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

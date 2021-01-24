@@ -6,6 +6,10 @@
 #include <memory>
 #include <simplesquirrel/vm.hpp>
 
+#include <cereal/types/memory.hpp>
+#include <cereal/types/unordered_map.hpp>
+#include <cereal/access.hpp>
+
 class Entity
 {
 public:
@@ -64,6 +68,14 @@ public:
 
 private:
 	std::unordered_map<ComponentType, std::shared_ptr<Component>> components;
+
+	friend class cereal::access;
+
+	template <class Archive>
+	void serialize(Archive &ar)
+	{
+		ar(id, pos, rot, components);
+	}
 };
 
 

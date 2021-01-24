@@ -6,6 +6,29 @@
 #include <memory>
 #include <functional>
 
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/archives/binary.hpp>
+
+struct Level
+{
+	std::vector<std::shared_ptr<Entity>> entities;
+
+	void clear()
+	{
+		for (auto& entity : entities)
+		{
+			entity.reset();
+		}
+	}
+
+	template <class Archive>
+	void serialize(Archive &ar)
+	{
+		ar(entities);
+	}
+};
+
 class World
 {
 public:
@@ -21,8 +44,11 @@ public:
 
 	void shutdown();
 
+	void loadLevel(const std::string &filePath);
+	void saveLevel(const std::string &filePath);
+
 private:
 	std::vector<std::shared_ptr<System>> systems;
-	std::vector<std::shared_ptr<Entity>> entities;
+	Level level;
 };
 

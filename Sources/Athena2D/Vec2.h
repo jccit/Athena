@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <simplesquirrel/vm.hpp>
 
+#include <cereal/access.hpp>
+
 struct Vec2
 {
 	Vec2()
@@ -37,5 +39,14 @@ struct Vec2
 		ssq::Class cls = vm.addClass("Vec2", ssq::Class::Ctor<Vec2(float, float)>());
 		cls.addVar("x", &Vec2::x);
 		cls.addVar("y", &Vec2::y);
+	}
+
+private:
+	friend class cereal::access;
+	
+	template <class Archive>
+	void serialize(Archive &ar)
+	{
+		ar(x, y);
 	}
 };

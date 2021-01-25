@@ -84,7 +84,7 @@ void World::shutdown()
 void World::loadLevel(const std::string &filePath)
 {
 	std::ifstream file = FS_GetFile(filePath);
-	cereal::BinaryInputArchive archive(file);
+	CEREAL_INPUT archive(file);
 
 	level.clear();
 
@@ -96,9 +96,9 @@ void World::loadLevel(const std::string &filePath)
 void World::saveLevel(const std::string &filePath)
 {
 	std::ofstream file = FS_WriteStream(filePath);
-	cereal::BinaryOutputArchive archive(file);
+	CEREAL_OUTPUT archive(file);
 
-	archive(level);
+	archive(CEREAL_NVP(level));
 
 	LOG("Saved level " + filePath, "World");
 }

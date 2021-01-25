@@ -52,7 +52,8 @@ int Engine::init()
 	SqVM::getInstance().runScript("core/EntityScript.nut");
 
 	// test
-	
+
+	/*
 	Entity* ent = new Entity();
 	Sprite* sprite = new Sprite();
 	Script* script = new Script();
@@ -65,8 +66,9 @@ int Engine::init()
 	ent->id = "testEnt";
 	world.addEntity(ent);
 	world.saveLevel("test.lvl");
+	*/
 
-	//world.loadLevel("test.lvl");
+	world.loadLevel("test.lvl");
 	
 	return 0;
 }

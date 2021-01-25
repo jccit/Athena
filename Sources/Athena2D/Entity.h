@@ -74,7 +74,12 @@ private:
 	template <class Archive>
 	void serialize(Archive &ar)
 	{
-		ar(id, pos, rot, components);
+		ar(
+			CEREAL_NVP(id),
+			CEREAL_NVP(pos),
+			CEREAL_NVP(rot),
+			CEREAL_NVP(components)
+		);
 	}
 };
 

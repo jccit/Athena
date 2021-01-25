@@ -77,7 +77,12 @@ void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 
 	if (sprite && sprite->loaded && !sprite->failed)
 	{
-		SDL_Rect dst = { entity->pos.x, entity->pos.y, sprite->width, sprite->height };
+		SDL_Rect dst = {
+			static_cast<int>(entity->pos.x),
+			static_cast<int>(entity->pos.y),
+			sprite->width,
+			sprite->height
+		};
 		SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
 	}
 }

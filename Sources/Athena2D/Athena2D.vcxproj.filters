@@ -92,5 +92,8 @@
     <ClInclude Include="StdOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CerealArchive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

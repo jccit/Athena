@@ -2,7 +2,7 @@
 
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
-#include <cereal/archives/binary.hpp>
+#include "CerealArchive.h"
 
 #include "Component.h"
 #include <SDL.h>
@@ -34,7 +34,7 @@ struct Sprite final : public Component
 	template <class Archive>
 	void serialize(Archive &ar)
 	{
-		ar(src);
+		ar(CEREAL_NVP(src));
 	}
 };
 

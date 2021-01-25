@@ -8,7 +8,7 @@
 
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include <cereal/archives/binary.hpp>
+#include "CerealArchive.h"
 
 struct Level
 {
@@ -25,7 +25,7 @@ struct Level
 	template <class Archive>
 	void serialize(Archive &ar)
 	{
-		ar(entities);
+		ar(CEREAL_NVP(entities));
 	}
 };
 

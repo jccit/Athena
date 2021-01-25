@@ -2,6 +2,7 @@
 #include <simplesquirrel/vm.hpp>
 
 #include <cereal/access.hpp>
+#include <cereal/cereal.hpp>
 
 struct Vec2
 {
@@ -47,6 +48,6 @@ private:
 	template <class Archive>
 	void serialize(Archive &ar)
 	{
-		ar(x, y);
+		ar(CEREAL_NVP(x), CEREAL_NVP(y));
 	}
 };

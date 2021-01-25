@@ -2,7 +2,7 @@
 
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
-#include <cereal/archives/binary.hpp>
+#include "CerealArchive.h"
 
 #include "Component.h"
 #include <simplesquirrel/simplesquirrel.hpp>
@@ -12,8 +12,9 @@ struct Script final : public Component
 	std::string src;
 	std::string className;
 
-	ssq::Instance *instance;
-	ssq::Function *update;
+	ssq::Instance* instance;
+	ssq::Function* init;
+	ssq::Function* update;
 
 	bool loaded = false;
 	bool failed = false;
@@ -26,7 +27,7 @@ struct Script final : public Component
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(src, className);
+		ar(CEREAL_NVP(src), CEREAL_NVP(className));
 	}
 };
 

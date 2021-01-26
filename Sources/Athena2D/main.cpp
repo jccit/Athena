@@ -1,3 +1,4 @@
+#include <SDL.h>
 #include "Engine.h"
 #include <Utils/MessageBox.h>
 

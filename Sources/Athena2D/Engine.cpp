@@ -23,6 +23,8 @@
 
 #include "EventQueue.h"
 
+#include <Utils/Filesystem.h>
+
 World world;
 
 struct TestStruct
@@ -42,6 +44,15 @@ int Engine::init()
 {
 	Console::getInstance().registerOutput(new FileOutput());
 	Console::getInstance().registerOutput(new StdOutput());
+
+	std::string cfg = FS_ReadString(FS_UserDir() + "\\Athena\\config.cfg");
+	std::stringstream ss(cfg);
+	std::string cmd;
+
+	while (std::getline(ss, cmd, '\n'))
+	{
+		Console::getInstance().exec(cmd);
+	}
 
 	LOG("Init", "Engine");
 
@@ -71,12 +82,17 @@ int Engine::init()
 	*/
 
 	world.loadLevel("test.lvl");
+
 	
 	return 0;
 }
 
 void Engine::shutdown()
 {
+	// Save cfg
+	std::string cfg = Console::getInstance().getCfgFile();
+	FS_WriteString(FS_UserDir() + "\\Athena\\config.cfg", cfg);
+	
 	world.shutdown();
 
 	IMG_Quit();
@@ -120,6 +136,11 @@ void Engine::loop()
 				if (e.key.repeat == 0) {
 					std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
 					EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
+				}
+
+				if (e.key.keysym.sym == SDLK_ESCAPE)
+				{
+					running = false;
 				}
 				break;
 			}

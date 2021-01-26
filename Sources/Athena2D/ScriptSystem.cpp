@@ -16,7 +16,7 @@ void ScriptSystem::init()
 {
 	LOG("Init", "ScriptSystem");
 
-	EventQueue::getInstance().subscribe(this, &ScriptSystem::keyDownHandler);
+	EventQueue::getInstance().subscribe(this, &ScriptSystem::keyEventHandler);
 }
 
 void ScriptSystem::shutdown()
@@ -122,7 +122,7 @@ void ScriptSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
 }
 
-void ScriptSystem::keyDownHandler(KeyboardEvent* evt)
+void ScriptSystem::keyEventHandler(KeyboardEvent* evt)
 {
 	newEvents.push(evt);
 }

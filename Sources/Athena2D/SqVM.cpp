@@ -27,7 +27,7 @@ void SqVM::shutdown()
 
 void SqVM::runScript(std::string path)
 {
-	const std::string src = FS_GetFileString("scripts/" + path);
+	const std::string src = FS_ReadString("scripts/" + path);
 	ssq::Script script = vm->compileSource(src.c_str(), path.c_str());
 	vm->run(script);
 }

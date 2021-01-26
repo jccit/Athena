@@ -13,6 +13,8 @@
 #define LOG_DEBUG(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_DEBUG)
 #define LOG_VERBOSE(msg, src)	Console::getInstance().print(msg, src, OutputLevel::LEVEL_VERBOSE)
 
+typedef std::map<std::string, CVar*> CVarList;
+
 class Console
 {
 public:
@@ -29,13 +31,16 @@ public:
 	// Logging stuff
 	void print(const std::string& text, const std::string& source, OutputLevel level);
 
+	CVarList dumpVars(CVarFlags flags = CVAR_PERSIST);
+	std::string getCfgFile();
+
 private:
 	Console();
 
 	std::string parse(const std::string& command);
 	std::string runCommand(const std::string& opcode, const std::string& operand);
 
-	std::map<std::string, CVar*> cvars;
+	CVarList cvars;
 	std::vector<IOutput*> outputs;
 };
 

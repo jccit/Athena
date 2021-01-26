@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Console.h"
 
+#include <sstream>
+
 #ifndef _DEBUG
 static int maxLevel = LEVEL_INFO;
 #else
@@ -104,4 +106,35 @@ void Console::print(const std::string & text, const std::string & source, const 
 			output->onPrint(text, source, level);
 		}
 	}
+}
+
+CVarList Console::dumpVars(CVarFlags flags)
+{
+	CVarList filteredList;
+
+	for (auto cvarPair : cvars)
+	{
+		if (cvarPair.second->hasFlag(flags))
+		{
+			filteredList[cvarPair.first] = cvarPair.second;
+		}
+	}
+
+	return filteredList;
+}
+
+std::string Console::getCfgFile()
+{
+	CVarList vars = dumpVars();
+	std::ostringstream out;
+
+	for (auto cvarPair : vars)
+	{
+		out << cvarPair.first;
+		out << " ";
+		out << cvarPair.second->get();
+		out << std::endl;
+	}
+
+	return out.str();
 }

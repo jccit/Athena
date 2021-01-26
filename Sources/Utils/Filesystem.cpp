@@ -26,7 +26,7 @@ std::string FS_SaveDir()
 	return utf8Path;
 }
 
-std::ifstream FS_GetFile(std::string path)
+std::ifstream FS_OpenFileRead(std::string path, bool binary)
 {
 #ifdef WIN32
 	std::wstring realPath = UTF8ToWide(path);
@@ -34,13 +34,14 @@ std::ifstream FS_GetFile(std::string path)
 	std::string realPath = path;
 #endif
 
-	std::ifstream file(path, std::ios::binary);
+	std::ios::openmode openMode = binary ? std::ios::binary : 0;
+	std::ifstream file(path, openMode);
 	return file;
 }
 
-char* FS_GetFileBytes(std::string path, size_t* size)
+char* FS_ReadBytes(std::string path, size_t* size)
 {
-	std::ifstream file = FS_GetFile(path);
+	std::ifstream file = FS_OpenFileRead(path);
 
 	file.seekg(0, std::ios::end);
 	size_t length = file.tellg();
@@ -55,17 +56,16 @@ char* FS_GetFileBytes(std::string path, size_t* size)
 	return data;
 }
 
-std::string FS_GetFileString(std::string path)
+std::string FS_ReadString(std::string path)
 {
-	size_t size = 0;
-	char* buffer = FS_GetFileBytes(path, &size);
-
-	std::string output = std::string(buffer, size);
-	delete buffer;
+	std::ifstream file = FS_OpenFileRead(path, false);
+	std::string output((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+	file.close();
+	
 	return output;
 }
 
-std::ofstream FS_WriteStream(std::string path, bool nonBinary)
+std::ofstream FS_OpenFileWrite(std::string path, bool binary)
 {
 #ifdef WIN32
 	std::wstring realPath = UTF8ToWide(path);
@@ -73,21 +73,21 @@ std::ofstream FS_WriteStream(std::string path, bool nonBinary)
 	std::string realPath = path;
 #endif
 
-	std::ios::openmode openMode = nonBinary ? 0 : std::ios::binary;
+	std::ios::openmode openMode = binary ? std::ios::binary : 0;
 	std::ofstream file(path, openMode);
 	return file;
 }
 
-void FS_BytesToFile(std::string path, char* data, size_t size)
+void FS_WriteBytes(std::string path, char* data, size_t size)
 {
-	std::ofstream file = FS_WriteStream(path);
+	std::ofstream file = FS_OpenFileWrite(path);
 	file.write(data, size);	
 	file.close();
 }
 
-void FS_StringToFile(std::string path, std::string data)
+void FS_WriteString(std::string path, std::string data)
 {
-	std::ofstream file = FS_WriteStream(path, true);
+	std::ofstream file = FS_OpenFileWrite(path, false);
 	file << data;
 	file.close();
 }

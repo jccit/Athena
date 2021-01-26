@@ -84,7 +84,7 @@ void World::shutdown()
 
 void World::loadLevel(const std::string &filePath)
 {
-	std::ifstream file = FS_GetFile(filePath);
+	std::ifstream file = FS_OpenFileRead(filePath);
 	CEREAL_INPUT archive(file);
 
 	level.clear();
@@ -96,7 +96,7 @@ void World::loadLevel(const std::string &filePath)
 
 void World::saveLevel(const std::string &filePath)
 {
-	std::ofstream file = FS_WriteStream(filePath);
+	std::ofstream file = FS_OpenFileWrite(filePath);
 	CEREAL_OUTPUT archive(file);
 
 	archive(CEREAL_NVP(level));

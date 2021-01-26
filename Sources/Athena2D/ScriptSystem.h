@@ -23,7 +23,7 @@ public:
 	void update(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void afterUpdate(EntityList* entities, float deltaTime) override;
 
-	void keyDownHandler(KeyboardEvent* evt);
+	void keyEventHandler(KeyboardEvent* evt);
 
 private:
 	static ssq::Function* findFunc(ssq::Class& cls, const std::string &name);

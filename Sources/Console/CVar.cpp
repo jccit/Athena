@@ -24,6 +24,13 @@ CVar::CVar(std::string name, float defaultValue, int requestedFlags)
 	flags |= CVAR_FLOAT;
 }
 
+CVar::CVar(std::string name, bool defaultValue, int requestedFlags)
+{
+	init(name, requestedFlags);
+	boolVal = defaultValue;
+	flags |= CVAR_BOOL;
+}
+
 void CVar::init(std::string name, int requestedFlags)
 {
 	Console::getInstance().registerVar(name, this);
@@ -41,6 +48,10 @@ std::string CVar::get()
 	else if (isFloat())
 	{
 		val = std::to_string(getFloat());
+	}
+	else if (isBool())
+	{
+		val = boolVal ? "1" : "0";
 	}
 
 	return val;
@@ -74,6 +85,19 @@ bool CVar::set(std::string val)
 			return false;
 		}
 	}
+	if (isBool())
+	{
+		try
+		{
+			bool newVal = val == "0" ? false : true;
+			boolVal = newVal;
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
+	}
 
 	return false;
 }
@@ -99,6 +123,14 @@ float CVar::getFloat()
 	return floatVal;
 }
 
+bool CVar::getBool()
+{
+	if (!isBool()) {
+		throw new std::runtime_error("CVar is not a bool");
+	}
+	return boolVal;
+}
+
 bool CVar::hasFlag(CVarFlags flag)
 {
 	return (flags & flag) != 0;
@@ -112,4 +144,9 @@ bool CVar::isInt()
 bool CVar::isFloat()
 {
 	return hasFlag(CVAR_FLOAT);
+}
+
+bool CVar::isBool()
+{
+	return hasFlag(CVAR_BOOL);
 }

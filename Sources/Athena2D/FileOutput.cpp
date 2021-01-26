@@ -10,7 +10,7 @@ FileOutput::FileOutput()
 {
 	const std::string userPath = FS_UserDir();
 	filePath = userPath + "\\Athena\\game.log";
-	logFile = FS_WriteStream(filePath, true);
+	logFile = FS_OpenFileWrite(filePath, true);
 }
 
 FileOutput::~FileOutput()

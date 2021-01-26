@@ -17,9 +17,9 @@ class CVar
 public:
 	CVar(std::string name, int defaultValue, int requestedFlags);
 	CVar(std::string name, float defaultValue, int requestedFlags);
+	CVar(std::string name, bool defaultValue, int requestedFlags);
 	/*
 	CVar(std::string name, std::string defaultValue, int requestedFlags);
-	CVar(std::string name, bool defaultValue, int requestedFlags);
 	*/
 
 	std::string get();
@@ -27,11 +27,13 @@ public:
 
 	int getInt();
 	float getFloat();
+	bool getBool();
 	int flags = CVAR_NONE;
 
 	bool hasFlag(CVarFlags flag);
 	bool isInt();
 	bool isFloat();
+	bool isBool();
 
 private:
 	void init(std::string name, int requestedFlags);

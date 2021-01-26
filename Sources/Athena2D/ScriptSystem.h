@@ -6,6 +6,9 @@
 #include <simplesquirrel/simplesquirrel.hpp>
 #include <Console/Console.h>
 #include <set>
+#include <queue>
+
+#include "KeyboardEvent.h"
 
 class ScriptSystem : public System
 {
@@ -16,9 +19,11 @@ public:
 	void init() override;
 	void shutdown() override;
 	void preload(std::shared_ptr<Entity> entity, float deltaTime) override;
-	void beforeUpdate(float deltaTime) override;
+	void beforeUpdate(EntityList* entities, float deltaTime) override;
 	void update(std::shared_ptr<Entity> entity, float deltaTime) override;
-	void afterUpdate(float deltaTime) override;
+	void afterUpdate(EntityList* entities, float deltaTime) override;
+
+	void keyDownHandler(KeyboardEvent* evt);
 
 private:
 	static ssq::Function* findFunc(ssq::Class& cls, const std::string &name);
@@ -46,5 +51,6 @@ private:
 	}
 
 	std::set<std::string> loadedScripts;
+	std::queue<Event*> newEvents;
 };
 

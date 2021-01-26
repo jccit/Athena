@@ -14,6 +14,7 @@ World::World()
 
 void World::tick(float deltaTime)
 {
+	
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
 		eachEntity([system, deltaTime](std::shared_ptr<Entity> entity)
@@ -22,9 +23,9 @@ void World::tick(float deltaTime)
 		});
 	});
 
-	eachSystem([deltaTime](std::shared_ptr<System> system)
+	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
-		system->beforeUpdate(deltaTime);
+		system->beforeUpdate(&level.entities, deltaTime);
 	});
 	
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
@@ -35,9 +36,9 @@ void World::tick(float deltaTime)
 		});
 	});
 
-	eachSystem([deltaTime](std::shared_ptr<System> system)
+	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
-		system->afterUpdate(deltaTime);
+		system->afterUpdate(&level.entities, deltaTime);
 	});
 }
 

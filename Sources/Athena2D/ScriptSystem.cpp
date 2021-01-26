@@ -1,4 +1,5 @@
 #include "ScriptSystem.h"
+#include "EventQueue.h"
 
 SqVM* vm;
 
@@ -14,6 +15,8 @@ ScriptSystem::~ScriptSystem()
 void ScriptSystem::init()
 {
 	LOG("Init", "ScriptSystem");
+
+	EventQueue::getInstance().subscribe(this, &ScriptSystem::keyDownHandler);
 }
 
 void ScriptSystem::shutdown()
@@ -77,13 +80,35 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 
 		script->init = findFunc(cls, "init");
 		script->update = findFunc(cls, "update");
+		script->keyDown = findFunc(cls, "keyDown");
+		script->keyUp = findFunc(cls, "keyUp");
 
 		callFunc(script, script->init);
 	}
 }
 
-void ScriptSystem::beforeUpdate(float deltaTime)
+void ScriptSystem::beforeUpdate(EntityList* entities, float deltaTime)
 {
+	while (!newEvents.empty())
+	{
+		Event* evt = newEvents.front();
+		newEvents.pop();
+
+		if (KeyboardEvent* keyEvt = dynamic_cast<KeyboardEvent*>(evt))
+		{
+			for (auto entity : *entities)
+			{
+				std::shared_ptr<Script> s = entity->getComponent<Script>();
+				if (s && s->loaded && !s->failed)
+				{
+					ssq::Function* evtFunc = keyEvt->isDown ? s->keyDown : s->keyUp;
+
+					if (evtFunc != nullptr)
+						callFunc(s, evtFunc, keyEvt->keyName);
+				}
+			}
+		}
+	}
 }
 
 void ScriptSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
@@ -93,8 +118,13 @@ void ScriptSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 	callFunc(script, script->update, deltaTime);
 }
 
-void ScriptSystem::afterUpdate(float deltaTime)
+void ScriptSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
+}
+
+void ScriptSystem::keyDownHandler(KeyboardEvent* evt)
+{
+	newEvents.push(evt);
 }
 
 ssq::Function* ScriptSystem::findFunc(ssq::Class& cls, const std::string& name)

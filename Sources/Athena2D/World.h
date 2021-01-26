@@ -2,7 +2,6 @@
 
 #include "System.h"
 #include "Entity.h"
-#include <vector>
 #include <memory>
 #include <functional>
 
@@ -12,7 +11,7 @@
 
 struct Level
 {
-	std::vector<std::shared_ptr<Entity>> entities;
+	EntityList entities;
 
 	void clear()
 	{

@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "EventQueue.h"
+
 SDL_Renderer* renderer;
 
 RenderSystem::RenderSystem()
@@ -66,7 +68,7 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 	}
 }
 
-void RenderSystem::beforeUpdate(float deltaTime)
+void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
 {
 	SDL_RenderClear(renderer);
 }
@@ -87,7 +89,7 @@ void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 	}
 }
 
-void RenderSystem::afterUpdate(float deltaTime)
+void RenderSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
 	SDL_RenderPresent(renderer);
 }

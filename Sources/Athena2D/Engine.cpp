@@ -21,6 +21,8 @@
 #include "Sprite.h"
 #include "SqVM.h"
 
+#include "EventQueue.h"
+
 World world;
 
 struct TestStruct
@@ -105,10 +107,21 @@ void Engine::loop()
 		
 		while (SDL_PollEvent(&e))
 		{
+			bool down = true;
+			
 			switch (e.type)
 			{
 			case SDL_QUIT:
 				running = false;
+				break;
+			case SDL_KEYUP:
+				down = false;
+			case SDL_KEYDOWN:
+				if (e.key.repeat == 0) {
+					std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
+					EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
+				}
+				break;
 			}
 		}
 

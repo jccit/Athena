@@ -178,7 +178,10 @@
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventQueue.h" />
     <ClInclude Include="FileOutput.h" />
+    <ClInclude Include="KeyboardEvent.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="RenderSystem.h" />

@@ -83,4 +83,4 @@ private:
 	}
 };
 
-
+typedef std::vector<std::shared_ptr<Entity>> EntityList;

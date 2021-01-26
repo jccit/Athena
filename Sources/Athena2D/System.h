@@ -18,9 +18,9 @@ public:
 	virtual void shutdown() = 0;
 
 	virtual void preload(std::shared_ptr<Entity> entity, float deltaTime) = 0;
-	virtual void beforeUpdate(float deltaTime) = 0;
+	virtual void beforeUpdate(EntityList *entities, float deltaTime) = 0;
 	virtual void update(std::shared_ptr<Entity> entity, float deltaTime) = 0;
-	virtual void afterUpdate(float deltaTime) = 0;
+	virtual void afterUpdate(EntityList* entities, float deltaTime) = 0;
 
 	SystemState state = SystemState::INACTIVE;
 

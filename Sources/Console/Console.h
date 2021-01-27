@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <memory>
 
 #define LOG(msg, src)			Console::getInstance().print(msg, src, OutputLevel::LEVEL_INFO)
 #define LOG_WARN(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_WARNING)
@@ -24,7 +25,7 @@ public:
 	void shutdown();
 
 	void registerVar(const std::string& name, CVar* cvar);
-	void registerOutput(IOutput* output);
+	void registerOutput(std::shared_ptr<IOutput> output);
 
 	std::string exec(const std::string& command);
 
@@ -41,6 +42,6 @@ private:
 	std::string runCommand(const std::string& opcode, const std::string& operand);
 
 	CVarList cvars;
-	std::vector<IOutput*> outputs;
+	std::vector<std::shared_ptr<IOutput>> outputs;
 };
 

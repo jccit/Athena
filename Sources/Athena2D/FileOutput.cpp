@@ -24,29 +24,7 @@ FileOutput::~FileOutput()
 
 void FileOutput::onPrint(std::string text, std::string source, OutputLevel level)
 {
-	std::string prefix;
-
-	switch (level)
-	{
-	case LEVEL_FATAL:
-		prefix = "F";
-		break;
-	case LEVEL_ERROR:
-		prefix = "E";
-		break;
-	case LEVEL_WARNING:
-		prefix = "W";
-		break;
-	case LEVEL_DEBUG:
-		prefix = "D";
-		break;
-	case LEVEL_VERBOSE:
-		prefix = "V";
-		break;
-	case LEVEL_INFO:
-		prefix = "I";
-		break;
-	}
+	std::string prefix = levelToString(level);
 
 	auto now = std::chrono::system_clock::now();
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;

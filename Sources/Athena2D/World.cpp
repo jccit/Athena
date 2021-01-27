@@ -16,8 +16,7 @@ World::World()
 }
 
 void World::tick(float deltaTime)
-{
-	
+{	
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
 		eachEntity([system, deltaTime](std::shared_ptr<Entity> entity)
@@ -91,7 +90,8 @@ void World::eachSystem(std::function<void(std::shared_ptr<System>)> callback)
 {
 	for (auto& system : systems)
 	{
-		callback(system);
+		if (!paused || system->ignorePause)
+			callback(system);
 	}
 }
 
@@ -126,4 +126,19 @@ void World::saveLevel(const std::string &filePath)
 	archive(CEREAL_NVP(level));
 
 	LOG("Saved level " + filePath, "World");
+}
+
+bool World::isPaused()
+{
+	return paused;
+}
+
+void World::setPaused(bool p)
+{
+	paused = p;
+}
+
+void World::togglePause()
+{
+	setPaused(!paused);
 }

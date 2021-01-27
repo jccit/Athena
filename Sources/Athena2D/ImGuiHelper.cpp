@@ -1,7 +1,27 @@
 #include "ImGuiHelper.h"
+#include "ImGuiConsole.h"
 #include <imgui_sdl.h>
 #include <imgui.h>
 #include <imgui/backends/imgui_impl_sdl.h>
+
+#include <Console/Console.h>
+
+std::vector<std::shared_ptr<ImGuiTool>> tools;
+
+ImGuiHelper::ImGuiHelper()
+{
+	auto console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
+	Console::getInstance().registerOutput(console);
+	tools.push_back(console);
+}
+
+ImGuiHelper::~ImGuiHelper()
+{
+	for (auto tool : tools)
+	{
+		tool.reset();
+	}
+}
 
 void ImGuiHelper::init(Window* win)
 {
@@ -26,19 +46,35 @@ void ImGuiHelper::shutdown()
 }
 
 void ImGuiHelper::newFrame(float delta, Window* win)
-{
+{	
 	ImGui_ImplSDL2_NewFrame(win->getSDLWindow());
 	
 	ImGuiIO& io = ImGui::GetIO();
 	io.DeltaTime = delta;
 	
 	ImGui::NewFrame();
-	ImGui::ShowDemoWindow();
+	
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("Tools"))
+		{
+			for (auto tool : tools)
+			{
+				tool->renderMenu();
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+
+	for (auto tool : tools)
+	{
+		tool->render();
+	}
 }
 
 void ImGuiHelper::render()
 {
-	
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
 }

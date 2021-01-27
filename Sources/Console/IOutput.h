@@ -28,4 +28,34 @@ public:
 	 * \param level Severity of the message
 	 */
 	virtual void onPrint(std::string text, std::string source, OutputLevel level) = 0;
+
+protected:
+	static std::string levelToString(OutputLevel level)
+	{
+		std::string prefix;
+
+		switch (level)
+		{
+		case LEVEL_FATAL:
+			prefix = "F";
+			break;
+		case LEVEL_ERROR:
+			prefix = "E";
+			break;
+		case LEVEL_WARNING:
+			prefix = "W";
+			break;
+		case LEVEL_DEBUG:
+			prefix = "D";
+			break;
+		case LEVEL_VERBOSE:
+			prefix = "V";
+			break;
+		case LEVEL_INFO:
+			prefix = "I";
+			break;
+		}
+
+		return prefix;
+	}
 };

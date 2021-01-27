@@ -1,13 +1,17 @@
 #pragma once
 
 #include "Window.h"
+#include "ImGuiConsole.h"
 
 class ImGuiHelper
 {
 public:
+	ImGuiHelper();
+	~ImGuiHelper();
+	
 	static void init(Window* win);
 	static void shutdown();
-	static void newFrame(float delta, Window* win);
+	void newFrame(float delta, Window* win);
 	static void render();
 
 	static bool wantsKeyboard();

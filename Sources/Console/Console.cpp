@@ -25,7 +25,7 @@ void Console::shutdown()
 {
 	for (auto out : outputs)
 	{
-		delete out;
+		out.reset();
 	}
 }
 
@@ -43,7 +43,7 @@ void Console::registerVar(const std::string & name, CVar * cvar)
  * \brief Register an output to write the console to
  * \param output Output instance
  */
-void Console::registerOutput(IOutput * output)
+void Console::registerOutput(std::shared_ptr<IOutput> output)
 {
 	outputs.push_back(output);
 }
@@ -101,7 +101,7 @@ std::string Console::runCommand(const std::string & opcode, const std::string & 
 void Console::print(const std::string & text, const std::string & source, const OutputLevel level)
 {
 	if (level <= maxLevel) {
-		for (IOutput* output : outputs)
+		for (std::shared_ptr<IOutput> output : outputs)
 		{
 			output->onPrint(text, source, level);
 		}

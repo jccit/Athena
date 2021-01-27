@@ -47,8 +47,13 @@ public:
 	void loadLevel(const std::string &filePath);
 	void saveLevel(const std::string &filePath);
 
+	bool isPaused();
+	void setPaused(bool p);
+	void togglePause();
+
 private:
 	std::vector<std::shared_ptr<System>> systems;
 	Level level;
+	bool paused = false;
 };
 

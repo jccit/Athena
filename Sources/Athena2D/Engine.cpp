@@ -52,8 +52,8 @@ struct TestStruct
 
 int Engine::init()
 {
-	Console::getInstance().registerOutput(new FileOutput());
-	Console::getInstance().registerOutput(new StdOutput());
+	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new FileOutput()));
+	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new StdOutput()));
 
 	std::string cfg = FS_ReadString(FS_UserDir() + "\\Athena\\config.cfg");
 	std::stringstream ss(cfg);
@@ -149,7 +149,6 @@ void Engine::loop()
 
 	while (running)
 	{
-		int wheel = 0;
 		auto currentTime = std::chrono::steady_clock::now();
 		if (firstRun) {
 			previousTime = currentTime;
@@ -170,18 +169,15 @@ void Engine::loop()
 			case SDL_KEYUP:
 				down = false;
 			case SDL_KEYDOWN:
-				if (e.key.repeat == 0 && !ImGuiHelper::wantsKeyboard()) {
-					std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
-					EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
+				if (e.key.repeat == 0) {
+					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+						world.togglePause();
+					
+					if (!ImGuiHelper::wantsKeyboard()) {
+						std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
+						EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
+					}
 				}
-
-				if (e.key.keysym.sym == SDLK_ESCAPE)
-				{
-					running = false;
-				}
-				break;
-			case SDL_MOUSEWHEEL:
-				wheel = e.wheel.y;
 				break;
 			}
 		}

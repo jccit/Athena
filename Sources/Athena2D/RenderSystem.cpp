@@ -6,12 +6,18 @@
 #include "ImGuiHelper.h"
 
 SDL_Renderer* renderer;
+ImGuiHelper* helper;
 
 RenderSystem::RenderSystem()
 {
+	ignorePause = true;
+	helper = new ImGuiHelper();
 }
 
-RenderSystem::~RenderSystem() = default;
+RenderSystem::~RenderSystem()
+{
+	delete helper;
+}
 
 void RenderSystem::init()
 {
@@ -72,7 +78,7 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 
 void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
 {	
-	ImGuiHelper::newFrame(deltaTime, win);
+	helper->newFrame(deltaTime, win);
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);

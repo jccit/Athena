@@ -175,7 +175,9 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FileOutput.cpp" />
+    <ClCompile Include="ImGuiConsole.cpp" />
     <ClCompile Include="ImGuiHelper.cpp" />
+    <ClCompile Include="ImGuiTool.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
@@ -198,7 +200,9 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventQueue.h" />
     <ClInclude Include="FileOutput.h" />
+    <ClInclude Include="ImGuiConsole.h" />
     <ClInclude Include="ImGuiHelper.h" />
+    <ClInclude Include="ImGuiTool.h" />
     <ClInclude Include="KeyboardEvent.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicsSystem.h" />

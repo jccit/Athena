@@ -27,6 +27,7 @@ public:
 	virtual void afterFixedUpdate(EntityList* entities, float deltaTime) = 0;
 
 	SystemState state = SystemState::INACTIVE;
+	bool ignorePause = false;
 
 protected:
 	ComponentSignature componentSignature;

@@ -1,7 +1,6 @@
+#include "pch.h"
 #include "SqVM.h"
 #include <Utils/Filesystem.h>
-
-#include "Entity.h"
 
 SqVM::SqVM()
 {

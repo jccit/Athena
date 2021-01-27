@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <SDL.h>
 #include <simplesquirrel/vm.hpp>
 
 #include <cereal/access.hpp>
@@ -30,6 +31,16 @@ struct Vec2
 		x += a.x;
 		y += a.y;
 		return *this;
+	}
+
+	SDL_Point toPoint()
+	{
+		return SDL_Point{ static_cast<int>(x), static_cast<int>(y) };
+	}
+
+	bool isZero()
+	{
+		return x == 0.0f && y == 0.0f;
 	}
 
 	float x;

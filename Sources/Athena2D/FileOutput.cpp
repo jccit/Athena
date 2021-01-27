@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include "pch.h"
 #include "FileOutput.h"
 #include <Utils/Filesystem.h>
 #include <chrono>

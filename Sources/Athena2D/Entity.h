@@ -56,6 +56,7 @@ public:
 		ssq::Class cls = vm.addClass("Entity", ssq::Class::Ctor < Entity() > ());
 		cls.addVar("pos", &Entity::pos);
 		cls.addVar("rot", &Entity::rot);
+		cls.addVar("origin", &Entity::origin);
 		cls.addVar("id", &Entity::id);
 
 		cls.addFunc("translate", &Entity::translate);
@@ -64,7 +65,8 @@ public:
 
 	std::string id;
 	Vec2 pos;
-	Vec2 rot;
+	float rot;
+	Vec2 origin;
 
 private:
 	std::unordered_map<ComponentType, std::shared_ptr<Component>> components;

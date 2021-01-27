@@ -1,7 +1,9 @@
+#include "pch.h"
 #include "World.h"
 #include "ComponentManager.h"
 #include "Script.h"
 #include "Sprite.h"
+#include "Rigidbody.h"
 
 #include <Utils/Filesystem.h>
 #include <Console/Console.h>
@@ -10,6 +12,7 @@ World::World()
 {
 	REGISTER_COMPONENT(Sprite);
 	REGISTER_COMPONENT(Script);
+	REGISTER_COMPONENT(Rigidbody);
 }
 
 void World::tick(float deltaTime)
@@ -39,6 +42,27 @@ void World::tick(float deltaTime)
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
 		system->afterUpdate(&level.entities, deltaTime);
+	});
+}
+
+void World::fixedTick(float deltaTime)
+{
+	eachSystem([this, deltaTime](std::shared_ptr<System> system)
+	{
+		system->beforeFixedUpdate(&level.entities, deltaTime);
+	});
+
+	eachSystem([this, deltaTime](std::shared_ptr<System> system)
+	{
+		eachEntity([system, deltaTime](std::shared_ptr<Entity> entity)
+		{
+			system->fixedUpdate(entity, deltaTime);
+		});
+	});
+
+	eachSystem([this, deltaTime](std::shared_ptr<System> system)
+	{
+		system->afterFixedUpdate(&level.entities, deltaTime);
 	});
 }
 

@@ -22,6 +22,10 @@ public:
 	virtual void update(std::shared_ptr<Entity> entity, float deltaTime) = 0;
 	virtual void afterUpdate(EntityList* entities, float deltaTime) = 0;
 
+	virtual void beforeFixedUpdate(EntityList* entities, float deltaTime) = 0;
+	virtual void fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime) = 0;
+	virtual void afterFixedUpdate(EntityList* entities, float deltaTime) = 0;
+
 	SystemState state = SystemState::INACTIVE;
 
 protected:

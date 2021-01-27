@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "ScriptSystem.h"
-#include "EventQueue.h"
 
 SqVM* vm;
 
@@ -115,10 +115,23 @@ void ScriptSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 {
 	std::shared_ptr<Script> script = entity->getComponent<Script>();
 
-	callFunc(script, script->update, deltaTime);
+	if (script && script->loaded && !script->failed)
+		callFunc(script, script->update, deltaTime);
 }
 
 void ScriptSystem::afterUpdate(EntityList* entities, float deltaTime)
+{
+}
+
+void ScriptSystem::beforeFixedUpdate(EntityList* entities, float deltaTime)
+{
+}
+
+void ScriptSystem::fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime)
+{
+}
+
+void ScriptSystem::afterFixedUpdate(EntityList* entities, float deltaTime)
 {
 }
 

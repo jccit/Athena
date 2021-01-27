@@ -23,6 +23,10 @@ public:
 	void update(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void afterUpdate(EntityList* entities, float deltaTime) override;
 
+	void beforeFixedUpdate(EntityList* entities, float deltaTime) override;
+	void fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime) override;
+	void afterFixedUpdate(EntityList* entities, float deltaTime) override;
+
 	void keyEventHandler(KeyboardEvent* evt);
 
 private:
@@ -50,6 +54,7 @@ private:
 		}
 	}
 
+private:
 	std::set<std::string> loadedScripts;
 	std::queue<Event*> newEvents;
 };

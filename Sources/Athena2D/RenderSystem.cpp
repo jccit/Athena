@@ -1,10 +1,8 @@
+#include "pch.h"
 #include "RenderSystem.h"
 #include "Sprite.h"
 #include <Console/Console.h>
-#include <SDL.h>
 #include <SDL_image.h>
-
-#include "EventQueue.h"
 
 SDL_Renderer* renderer;
 
@@ -85,11 +83,37 @@ void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 			sprite->width,
 			sprite->height
 		};
-		SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
+
+		if (entity->rot != 0)
+		{
+			SDL_Point centre;
+			if (entity->origin.isZero())
+			{
+				centre = entity->origin.toPoint();
+			}
+			
+			SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, entity->origin.isZero() ? NULL : &centre, SDL_FLIP_NONE);
+		}
+		else
+		{
+			SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
+		}
 	}
 }
 
 void RenderSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
 	SDL_RenderPresent(renderer);
+}
+
+void RenderSystem::beforeFixedUpdate(EntityList* entities, float deltaTime)
+{
+}
+
+void RenderSystem::fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime)
+{
+}
+
+void RenderSystem::afterFixedUpdate(EntityList* entities, float deltaTime)
+{
 }

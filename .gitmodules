@@ -7,3 +7,6 @@
 [submodule "ThirdParty/cereal"]
 	path = ThirdParty/cereal
 	url = https://github.com/USCiLab/cereal.git
+[submodule "ThirdParty/box2d"]
+	path = ThirdParty/box2d
+	url = https://github.com/erincatto/box2d.git

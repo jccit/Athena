@@ -34,6 +34,7 @@ public:
 	World();
 	
 	void tick(float deltaTime);
+	void fixedTick(float deltaTime);
 
 	void addEntity(Entity* entity);
 	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);

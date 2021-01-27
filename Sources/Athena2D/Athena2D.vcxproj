@@ -82,13 +82,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;..\..\ThirdParty\box2d\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SDL2\lib\x64;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Debug;..\..\ThirdParty\squirrel\build\lib\Debug;..\..\ThirdParty\box2d\build\bin\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\;F:\Libraries\SDL-mirror-release-2.0.14\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;..\..\ThirdParty\box2d\include;..\..\ThirdParty\imgui;..\..\ThirdParty\imgui_sdl;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Libraries\SDL-mirror-release-2.0.14\build\Release;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Debug;..\..\ThirdParty\squirrel\build\lib\Debug;..\..\ThirdParty\box2d\build\bin\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\;F:\Libraries\SDL2\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;..\..\ThirdParty\box2d\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SDL2\lib\x64;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Release;..\..\ThirdParty\squirrel\build\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\;F:\Libraries\SDL-mirror-release-2.0.14\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;..\..\ThirdParty\box2d\include;..\..\ThirdParty\imgui;..\..\ThirdParty\imgui_sdl;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Libraries\SDL-mirror-release-2.0.14\build\Release;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Release;..\..\ThirdParty\squirrel\build\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -133,7 +133,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -153,7 +153,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -165,9 +165,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ThirdParty\imgui\backends\imgui_impl_sdl.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\ThirdParty\imgui_sdl\imgui_sdl.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FileOutput.cpp" />
+    <ClCompile Include="ImGuiHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
@@ -179,6 +187,9 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\ThirdParty\imgui\backends\imgui_impl_sdl.h" />
+    <ClInclude Include="..\..\ThirdParty\imgui\imgui.h" />
+    <ClInclude Include="..\..\ThirdParty\imgui_sdl\imgui_sdl.h" />
     <ClInclude Include="CerealArchive.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
@@ -187,6 +198,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventQueue.h" />
     <ClInclude Include="FileOutput.h" />
+    <ClInclude Include="ImGuiHelper.h" />
     <ClInclude Include="KeyboardEvent.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicsSystem.h" />

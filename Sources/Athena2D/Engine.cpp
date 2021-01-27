@@ -28,6 +28,10 @@
 #include <Utils/Filesystem.h>
 #include <Console/CVar.h>
 
+
+#include <imgui/backends/imgui_impl_sdl.h>
+
+#include "ImGuiHelper.h"
 #include "Rigidbody.h"
 
 World world;
@@ -145,6 +149,7 @@ void Engine::loop()
 
 	while (running)
 	{
+		int wheel = 0;
 		auto currentTime = std::chrono::steady_clock::now();
 		if (firstRun) {
 			previousTime = currentTime;
@@ -153,6 +158,8 @@ void Engine::loop()
 		
 		while (SDL_PollEvent(&e))
 		{
+			ImGui_ImplSDL2_ProcessEvent(&e);
+			
 			bool down = true;
 			
 			switch (e.type)
@@ -163,7 +170,7 @@ void Engine::loop()
 			case SDL_KEYUP:
 				down = false;
 			case SDL_KEYDOWN:
-				if (e.key.repeat == 0) {
+				if (e.key.repeat == 0 && !ImGuiHelper::wantsKeyboard()) {
 					std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
 					EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
 				}
@@ -172,6 +179,9 @@ void Engine::loop()
 				{
 					running = false;
 				}
+				break;
+			case SDL_MOUSEWHEEL:
+				wheel = e.wheel.y;
 				break;
 			}
 		}

@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include <Console/Console.h>
 #include <SDL_image.h>
+#include "ImGuiHelper.h"
 
 SDL_Renderer* renderer;
 
@@ -18,6 +19,8 @@ void RenderSystem::init()
 	
 	win = new Window();
 	renderer = win->getRenderer();
+
+	ImGuiHelper::init(win);
 	
 	state = SystemState::ACTIVE;
 }
@@ -25,6 +28,7 @@ void RenderSystem::init()
 void RenderSystem::shutdown()
 {
 	LOG("Shutdown", "RenderSystem");
+	ImGuiHelper::shutdown();
 	delete win;
 }
 
@@ -67,7 +71,10 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 }
 
 void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
-{
+{	
+	ImGuiHelper::newFrame(deltaTime, win);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 }
 
@@ -103,6 +110,7 @@ void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
 
 void RenderSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
+	ImGuiHelper::render();
 	SDL_RenderPresent(renderer);
 }
 

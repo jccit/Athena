@@ -7,7 +7,7 @@ class PhysicsSystem : public System
 public:
 	PhysicsSystem();
 
-	void init() override;
+	void init(World* world) override;
 	void shutdown() override;
 	void preload(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void beforeUpdate(EntityList* entities, float deltaTime) override;

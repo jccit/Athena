@@ -85,4 +85,4 @@ private:
 	}
 };
 
-typedef std::vector<std::shared_ptr<Entity>> EntityList;
+typedef std::map<std::string, std::shared_ptr<Entity>> EntityList;

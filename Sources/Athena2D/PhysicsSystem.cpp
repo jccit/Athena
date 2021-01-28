@@ -5,6 +5,7 @@
 #include <box2d/b2_polygon_shape.h>
 #include <box2d/b2_fixture.h>
 #include <Console/CVar.h>
+#include <Console/Console.h>
 
 #include "Rigidbody.h"
 #include "Sprite.h"
@@ -21,12 +22,14 @@ PhysicsSystem::PhysicsSystem()
 {
 }
 
-void PhysicsSystem::init()
+void PhysicsSystem::init(World* world)
 {
+	LOG("Init", "PhysicsSystem");
 }
 
 void PhysicsSystem::shutdown()
 {
+	LOG("Shutdown", "PhysicsSystem");
 }
 
 void PhysicsSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)

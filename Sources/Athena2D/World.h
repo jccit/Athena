@@ -15,10 +15,7 @@ struct Level
 
 	void clear()
 	{
-		for (auto& entity : entities)
-		{
-			entity.reset();
-		}
+		entities.clear();
 	}
 
 	template <class Archive>
@@ -38,6 +35,7 @@ public:
 
 	void addEntity(Entity* entity);
 	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);
+	std::shared_ptr<Entity> getEntity(std::string id);
 	
 	void registerSystem(System* system);
 	void eachSystem(std::function<void(std::shared_ptr<System>)> callback);
@@ -53,6 +51,8 @@ public:
 
 private:
 	std::vector<std::shared_ptr<System>> systems;
+	std::string getNewID();
+	uint64_t lastID = 0;
 	Level level;
 	bool paused = false;
 };

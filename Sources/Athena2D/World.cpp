@@ -68,21 +68,29 @@ void World::fixedTick(float deltaTime)
 void World::addEntity(Entity* entity)
 {
 	std::shared_ptr<Entity> ptr(entity);
-	level.entities.push_back(std::move(ptr));
+	if (ptr->id.empty())
+		ptr->id = getNewID();
+	
+	level.entities[ptr->id] = std::move(ptr);
 }
 
 void World::eachEntity(std::function<void(std::shared_ptr<Entity>)> callback)
 {
 	for (auto& entity : level.entities)
 	{
-		callback(entity);
+		callback(entity.second);
 	}
+}
+
+std::shared_ptr<Entity> World::getEntity(std::string id)
+{
+	return level.entities[id];
 }
 
 void World::registerSystem(System* system)
 {
 	std::shared_ptr<System> ptr(system);
-	ptr->init();
+	ptr->init(this);
 	systems.push_back(std::move(ptr));
 }
 
@@ -141,4 +149,10 @@ void World::setPaused(bool p)
 void World::togglePause()
 {
 	setPaused(!paused);
+}
+
+std::string World::getNewID()
+{
+	lastID++;
+	return "entity" + std::to_string(lastID);
 }

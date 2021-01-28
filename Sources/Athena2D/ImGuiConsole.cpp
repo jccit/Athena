@@ -14,6 +14,8 @@ ImGuiConsole::ImGuiConsole()
     scancode = SDL_SCANCODE_GRAVE;
 
     memset(inputBuf, 0, sizeof(inputBuf));
+
+    LOG_VERBOSE("Created console window", "ImGuiConsole");
 }
 
 static int staticTextCallback(ImGuiInputTextCallbackData* data)

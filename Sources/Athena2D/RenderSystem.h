@@ -9,7 +9,7 @@ public:
 	RenderSystem();
 	virtual ~RenderSystem();
 
-	void init() override;
+	void init(World* world) override;
 	void shutdown() override;
 
 	void preload(std::shared_ptr<Entity> entity, float deltaTime) override;

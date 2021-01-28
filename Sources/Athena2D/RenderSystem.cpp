@@ -19,14 +19,14 @@ RenderSystem::~RenderSystem()
 	delete helper;
 }
 
-void RenderSystem::init()
+void RenderSystem::init(World* world)
 {
 	LOG("Init", "RenderSystem");
 	
 	win = new Window();
 	renderer = win->getRenderer();
 
-	ImGuiHelper::init(win);
+	helper->init(win, world);
 	
 	state = SystemState::ACTIVE;
 }
@@ -34,7 +34,7 @@ void RenderSystem::init()
 void RenderSystem::shutdown()
 {
 	LOG("Shutdown", "RenderSystem");
-	ImGuiHelper::shutdown();
+	helper->shutdown();
 	delete win;
 }
 

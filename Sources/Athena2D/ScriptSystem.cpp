@@ -12,7 +12,7 @@ ScriptSystem::~ScriptSystem()
 {
 }
 
-void ScriptSystem::init()
+void ScriptSystem::init(World* world)
 {
 	LOG("Init", "ScriptSystem");
 
@@ -96,7 +96,7 @@ void ScriptSystem::beforeUpdate(EntityList* entities, float deltaTime)
 
 		if (KeyboardEvent* keyEvt = dynamic_cast<KeyboardEvent*>(evt))
 		{
-			for (auto entity : *entities)
+			for (auto [id, entity] : *entities)
 			{
 				std::shared_ptr<Script> s = entity->getComponent<Script>();
 				if (s && s->loaded && !s->failed)

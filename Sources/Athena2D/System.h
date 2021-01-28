@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "Entity.h"
 
+class World;
+
 enum class SystemState
 {
 	INACTIVE = 0,
@@ -14,7 +16,7 @@ class System
 public:
 	virtual ~System() = default;
 
-	virtual void init() = 0;
+	virtual void init(World* world) = 0;
 	virtual void shutdown() = 0;
 
 	virtual void preload(std::shared_ptr<Entity> entity, float deltaTime) = 0;

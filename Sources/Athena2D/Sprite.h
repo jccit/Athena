@@ -7,9 +7,18 @@
 #include "Component.h"
 #include <SDL.h>
 
+enum class SpriteLayer : int8_t
+{
+	BACKGROUND = -100,
+	FOREGROUND = 0,
+	CHARACTER = 50,
+	UI = 100
+};
+
 struct Sprite final : public Component
 {
 	std::string src;
+	SpriteLayer layer;
 	SDL_Texture* texture;
 
 	int width = 0;
@@ -34,7 +43,7 @@ struct Sprite final : public Component
 	template <class Archive>
 	void serialize(Archive &ar)
 	{
-		ar(CEREAL_NVP(src));
+		ar(CEREAL_NVP(src), CEREAL_NVP(layer));
 	}
 };
 

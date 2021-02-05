@@ -84,7 +84,7 @@ void PhysicsSystem::beforeUpdate(EntityList* entities, float deltaTime)
 {
 }
 
-void PhysicsSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
+void PhysicsSystem::update(EntityList* entities, float deltaTime)
 {
 }
 

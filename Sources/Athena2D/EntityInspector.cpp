@@ -57,9 +57,21 @@ void EntityInspector::renderPanel()
         auto sprite = ent->getComponent<Sprite>();
         if (sprite && ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_None))
         {
+            std::string layer = "";
+
+            switch (sprite->layer)
+            {
+            case SpriteLayer::BACKGROUND: layer = "BACKGROUND"; break;
+            case SpriteLayer::FOREGROUND: layer = "FOREGROUND"; break;
+            case SpriteLayer::CHARACTER:  layer = "CHARACTER"; break;
+            case SpriteLayer::UI:         layer = "UI"; break;
+            default:                      layer = "UNKNOWN";
+            }
+        	
             ImGui::Text("Width:  %d", sprite->width);
             ImGui::Text("Height: %d", sprite->height);
             ImGui::Text("Source: %s", sprite->src.c_str());
+            ImGui::Text("Layer:  %s (%d)", layer.c_str(), sprite->layer);
             ImGui::Text("Loaded: %s", sprite->loaded ? "true" : "false");
         }
 

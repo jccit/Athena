@@ -4,6 +4,7 @@
 #include <Console/Console.h>
 #include <SDL_image.h>
 #include "ImGuiHelper.h"
+#include <map>
 
 SDL_Renderer* renderer;
 ImGuiHelper* helper;
@@ -84,32 +85,48 @@ void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
 	SDL_RenderClear(renderer);
 }
 
-void RenderSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
+void RenderSystem::update(EntityList* entities, float deltaTime)
 {
-	std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
+	std::multimap<SpriteLayer, std::shared_ptr<Entity>> spriteOrder;
 
-	if (sprite && sprite->loaded && !sprite->failed)
+	for (auto [id, unsortedEnt]: *entities)
 	{
-		SDL_Rect dst = {
-			static_cast<int>(entity->pos.x),
-			static_cast<int>(entity->pos.y),
-			sprite->width,
-			sprite->height
-		};
+		std::shared_ptr<Sprite> sprite = unsortedEnt->getComponent<Sprite>();
 
-		if (entity->rot != 0)
+		if (sprite)
 		{
-			SDL_Point centre;
-			if (entity->origin.isZero())
-			{
-				centre = entity->origin.toPoint();
-			}
-			
-			SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, entity->origin.isZero() ? NULL : &centre, SDL_FLIP_NONE);
+			spriteOrder.insert(std::pair(sprite->layer, unsortedEnt));
 		}
-		else
+	}
+	
+	
+	for (auto [layer, entity] : spriteOrder)
+	{
+		std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
+
+		if (sprite && sprite->loaded && !sprite->failed)
 		{
-			SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
+			SDL_Rect dst = {
+				static_cast<int>(entity->pos.x),
+				static_cast<int>(entity->pos.y),
+				sprite->width,
+				sprite->height
+			};
+
+			if (entity->rot != 0)
+			{
+				SDL_Point centre;
+				if (entity->origin.isZero())
+				{
+					centre = entity->origin.toPoint();
+				}
+
+				SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, entity->origin.isZero() ? NULL : &centre, SDL_FLIP_NONE);
+			}
+			else
+			{
+				SDL_RenderCopy(renderer, sprite->texture, NULL, &dst);
+			}
 		}
 	}
 }

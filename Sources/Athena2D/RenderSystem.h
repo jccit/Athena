@@ -14,7 +14,7 @@ public:
 
 	void preload(std::shared_ptr<Entity> entity, float deltaTime) override;
 	void beforeUpdate(EntityList* entities, float deltaTime) override;
-	void update(std::shared_ptr<Entity> entity, float deltaTime) override;
+	void update(EntityList* entities, float deltaTime) override;
 	void afterUpdate(EntityList* entities, float deltaTime) override;
 
 	void beforeFixedUpdate(EntityList* entities, float deltaTime) override;

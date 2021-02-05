@@ -40,10 +40,7 @@ void World::tick(float deltaTime)
 	
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
 	{
-		eachEntity([system, deltaTime](std::shared_ptr<Entity> entity)
-		{
-			system->update(entity, deltaTime);
-		});
+		system->update(&level.entities, deltaTime);
 	});
 
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)

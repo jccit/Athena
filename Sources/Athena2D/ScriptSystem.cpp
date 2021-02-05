@@ -111,12 +111,15 @@ void ScriptSystem::beforeUpdate(EntityList* entities, float deltaTime)
 	}
 }
 
-void ScriptSystem::update(std::shared_ptr<Entity> entity, float deltaTime)
+void ScriptSystem::update(EntityList* entities, float deltaTime)
 {
-	std::shared_ptr<Script> script = entity->getComponent<Script>();
+	for (auto [id, entity] : *entities)
+	{
+		std::shared_ptr<Script> script = entity->getComponent<Script>();
 
-	if (script && script->loaded && !script->failed)
-		callFunc(script, script->update, deltaTime);
+		if (script && script->loaded && !script->failed)
+			callFunc(script, script->update, deltaTime);
+	}
 }
 
 void ScriptSystem::afterUpdate(EntityList* entities, float deltaTime)

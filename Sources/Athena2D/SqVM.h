@@ -9,7 +9,8 @@ public:
 	~SqVM();
 
 	void shutdown();
-	
+
+	void exec(std::string script);
 	void runScript(std::string path);
 
 	ssq::VM* vm;

@@ -15,6 +15,14 @@ World::World()
 	REGISTER_COMPONENT(Rigidbody);
 }
 
+void World::expose(ssq::VM& vm)
+{
+	ssq::Class cls = vm.addClass("World", ssq::Class::Ctor < World() > ());
+
+	cls.addFunc("newEntity", &World::newEntity);
+	cls.addFunc("getEntity", &World::getEntity);
+}
+
 void World::tick(float deltaTime)
 {	
 	eachSystem([this, deltaTime](std::shared_ptr<System> system)
@@ -87,6 +95,15 @@ std::shared_ptr<Entity> World::getEntity(std::string id)
 	return level.entities[id];
 }
 
+
+Entity* World::newEntity(std::string id)
+{
+	Entity* ent = new Entity(id);
+	std::shared_ptr<Entity> sharedEnt = std::shared_ptr<Entity>(ent);
+	level.entities[ent->id] = sharedEnt;
+	return ent;
+}
+
 void World::registerSystem(System* system)
 {
 	std::shared_ptr<System> ptr(system);
@@ -104,7 +121,7 @@ void World::eachSystem(std::function<void(std::shared_ptr<System>)> callback)
 }
 
 void World::shutdown()
-{
+{	
 	for (auto& system : systems)
 	{
 		system->shutdown();

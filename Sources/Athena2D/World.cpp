@@ -21,6 +21,7 @@ void World::expose(ssq::VM& vm)
 
 	cls.addFunc("newEntity", &World::newEntity);
 	cls.addFunc("getEntity", &World::getEntity);
+	cls.addFunc("removeEntity", &World::removeEntity);
 }
 
 void World::tick(float deltaTime)
@@ -99,6 +100,11 @@ Entity* World::newEntity(std::string id)
 	std::shared_ptr<Entity> sharedEnt = std::shared_ptr<Entity>(ent);
 	level.entities[ent->id] = sharedEnt;
 	return ent;
+}
+
+void World::removeEntity(std::string id)
+{
+	level.entities.erase(id);
 }
 
 void World::registerSystem(System* system)

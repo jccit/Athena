@@ -41,6 +41,7 @@ public:
 	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);
 	std::shared_ptr<Entity> getEntity(std::string id);
 	Entity* newEntity(std::string id);
+	void removeEntity(std::string id);
 	
 	void registerSystem(System* system);
 	void eachSystem(std::function<void(std::shared_ptr<System>)> callback);

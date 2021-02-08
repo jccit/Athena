@@ -31,9 +31,11 @@ void EntityInspector::renderPanel()
         {
             if (selectedID.empty())
                 selectedID = ent->id;
-        	
-            if (ImGui::Selectable(ent->id.c_str(), selectedID == ent->id))
-                selectedID = ent->id;
+
+            if (ent) {
+                if (ImGui::Selectable(ent->id.c_str(), selectedID == ent->id))
+                    selectedID = ent->id;
+            }
         });
     	
         ImGui::EndChild();
@@ -49,44 +51,46 @@ void EntityInspector::renderPanel()
 
         std::shared_ptr<Entity> ent = world->getEntity(selectedID);
 
-        ImGui::Text("Position:");
-        ImGui::DragFloat("X", &ent->pos.x, 1.0f);
-        ImGui::DragFloat("Y", &ent->pos.y, 1.0f);
-        ImGui::DragFloat("Rotation", &ent->rot, 1.0f);
+        if (ent) {
+            ImGui::Text("Position:");
+            ImGui::DragFloat("X", &ent->pos.x, 1.0f);
+            ImGui::DragFloat("Y", &ent->pos.y, 1.0f);
+            ImGui::DragFloat("Rotation", &ent->rot, 1.0f);
 
-        auto sprite = ent->getComponent<Sprite>();
-        if (sprite && ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_None))
-        {
-            std::string layer = "";
-
-            switch (sprite->layer)
+            auto sprite = ent->getComponent<Sprite>();
+            if (sprite && ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_None))
             {
-            case SpriteLayer::BACKGROUND: layer = "BACKGROUND"; break;
-            case SpriteLayer::FOREGROUND: layer = "FOREGROUND"; break;
-            case SpriteLayer::CHARACTER:  layer = "CHARACTER"; break;
-            case SpriteLayer::UI:         layer = "UI"; break;
-            default:                      layer = "UNKNOWN";
+                std::string layer = "";
+
+                switch (sprite->layer)
+                {
+                case SpriteLayer::BACKGROUND: layer = "BACKGROUND"; break;
+                case SpriteLayer::FOREGROUND: layer = "FOREGROUND"; break;
+                case SpriteLayer::CHARACTER:  layer = "CHARACTER"; break;
+                case SpriteLayer::UI:         layer = "UI"; break;
+                default:                      layer = "UNKNOWN";
+                }
+
+                ImGui::Text("Width:  %d", sprite->width);
+                ImGui::Text("Height: %d", sprite->height);
+                ImGui::Text("Source: %s", sprite->src.c_str());
+                ImGui::Text("Layer:  %s (%d)", layer.c_str(), sprite->layer);
+                ImGui::Text("Loaded: %s", sprite->loaded ? "true" : "false");
             }
-        	
-            ImGui::Text("Width:  %d", sprite->width);
-            ImGui::Text("Height: %d", sprite->height);
-            ImGui::Text("Source: %s", sprite->src.c_str());
-            ImGui::Text("Layer:  %s (%d)", layer.c_str(), sprite->layer);
-            ImGui::Text("Loaded: %s", sprite->loaded ? "true" : "false");
-        }
 
-        auto script = ent->getComponent<Script>();
-        if (script && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None))
-        {
-            ImGui::Text("Source: %s", script->src.c_str());
-            ImGui::Text("Loaded: %s", script->loaded ? "true" : "false");
-        }
+            auto script = ent->getComponent<Script>();
+            if (script && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None))
+            {
+                ImGui::Text("Source: %s", script->src.c_str());
+                ImGui::Text("Loaded: %s", script->loaded ? "true" : "false");
+            }
 
-        auto rb = ent->getComponent<Rigidbody>();
-        if (rb && ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_None))
-        {
-            ImGui::Text("Width:  %d", rb->width);
-            ImGui::Text("Height: %d", rb->height);
+            auto rb = ent->getComponent<Rigidbody>();
+            if (rb && ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_None))
+            {
+                ImGui::Text("Width:  %d", rb->width);
+                ImGui::Text("Height: %d", rb->height);
+            }
         }
     	
         ImGui::EndChild();

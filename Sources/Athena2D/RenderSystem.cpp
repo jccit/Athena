@@ -5,9 +5,12 @@
 #include <SDL_image.h>
 #include "ImGuiHelper.h"
 #include <map>
+#include <set>
 
 SDL_Renderer* renderer;
 ImGuiHelper* helper;
+std::map<std::string, SDL_Texture*> textureCache;
+uint64_t lastEntCount = 0;
 
 RenderSystem::RenderSystem()
 {
@@ -41,39 +44,29 @@ void RenderSystem::shutdown()
 
 void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 {
-	std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
+	if (entity) {
+		std::shared_ptr<Sprite> sprite = entity->getComponent<Sprite>();
 
-	if (sprite && !sprite->loaded && !sprite->failed)
-	{
-		LOG_VERBOSE("Loading sprite " + sprite->src, "RenderSystem");
-		
-		std::string path = "sprites/" + sprite->src;
-		SDL_Surface* imgSurface = IMG_Load(path.c_str());
-		if (imgSurface == nullptr)
+		if (sprite && !sprite->loaded && !sprite->failed)
 		{
-			LOG_ERROR("Failed to load sprite " + sprite->src, "RenderSystem");
-			sprite->failed = true;
-			return;
+			sprite->texture = getCachedTexture(sprite->src);
+			if (sprite->texture == nullptr)
+			{
+				LOG_ERROR("Failed to load texture " + sprite->src, "RenderSystem");
+				sprite->failed = true;
+				return;
+			}
+
+			int queryRes = SDL_QueryTexture(sprite->texture, nullptr, nullptr, &sprite->width, &sprite->height);
+			if (queryRes != 0)
+			{
+				LOG_ERROR("Error querying texture data for " + sprite->src, "RenderSystem");
+				sprite->failed = true;
+				return;
+			}
+
+			sprite->loaded = true;
 		}
-		
-		sprite->texture = SDL_CreateTextureFromSurface(renderer, imgSurface);
-		if (sprite->texture == nullptr)
-		{
-			LOG_ERROR("Failed to create hardware texture for " + sprite->src, "RenderSystem");
-			sprite->failed = true;
-			return;
-		}
-		
-		int queryRes = SDL_QueryTexture(sprite->texture, nullptr, nullptr, &sprite->width, &sprite->height);
-		if (queryRes != 0)
-		{
-			LOG_ERROR("Error querying texture data for " + sprite->src, "RenderSystem");
-			sprite->failed = true;
-			return;
-		}
-		
-		sprite->loaded = true;
-		SDL_FreeSurface(imgSurface);
 	}
 }
 
@@ -91,11 +84,13 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 
 	for (auto [id, unsortedEnt]: *entities)
 	{
-		std::shared_ptr<Sprite> sprite = unsortedEnt->getComponent<Sprite>();
+		if (unsortedEnt) {
+			std::shared_ptr<Sprite> sprite = unsortedEnt->getComponent<Sprite>();
 
-		if (sprite)
-		{
-			spriteOrder.insert(std::pair(sprite->layer, unsortedEnt));
+			if (sprite)
+			{
+				spriteOrder.insert(std::pair(sprite->layer, unsortedEnt));
+			}
 		}
 	}
 	
@@ -135,6 +130,8 @@ void RenderSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
 	ImGuiHelper::render();
 	SDL_RenderPresent(renderer);
+
+	removeUnusedTextures(entities);
 }
 
 void RenderSystem::beforeFixedUpdate(EntityList* entities, float deltaTime)
@@ -147,4 +144,74 @@ void RenderSystem::fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime)
 
 void RenderSystem::afterFixedUpdate(EntityList* entities, float deltaTime)
 {
+}
+
+SDL_Texture* RenderSystem::getCachedTexture(std::string path)
+{
+	if (textureCache.count(path))
+	{
+		return textureCache[path];
+	}
+	
+	LOG_VERBOSE("Loading sprite " + path, "RenderSystem");
+
+	std::string fullPath = "sprites/" + path;
+	SDL_Surface* imgSurface = IMG_Load(fullPath.c_str());
+	if (imgSurface == nullptr)
+	{
+		LOG_ERROR("Failed to load sprite " + path, "RenderSystem");
+		return nullptr;
+	}
+
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, imgSurface);
+	if (tex == nullptr)
+	{
+		LOG_ERROR("Failed to create hardware texture for " + path, "RenderSystem");
+		return nullptr;
+	}
+
+	SDL_FreeSurface(imgSurface);
+
+	textureCache[path] = tex;
+
+	return tex;
+}
+
+void RenderSystem::removeUnusedTextures(EntityList* entities)
+{
+	if (entities->size() != lastEntCount)
+	{
+		std::set<std::string> textures;
+
+		for (auto const& item : textureCache)
+			textures.insert(item.first);
+
+		for (auto [id, unsortedEnt] : *entities)
+		{
+			if (unsortedEnt) {
+				std::shared_ptr<Sprite> sprite = unsortedEnt->getComponent<Sprite>();
+
+				if (sprite)
+				{
+					if (textures.find(sprite->src) != textures.end())
+					{
+						textures.erase(sprite->src);
+					}
+				}
+			}
+		}
+
+		// we have textures to remove!
+		if (textures.size() > 0)
+		{
+			for (auto const tex : textures)
+			{
+				SDL_Texture* sdlTex = textureCache[tex];
+				SDL_DestroyTexture(sdlTex);
+				textureCache.erase(tex);
+			}
+		}
+
+		lastEntCount = entities->size();
+	}
 }

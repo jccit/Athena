@@ -27,14 +27,6 @@ struct Sprite final : public Component
 	bool loaded = false;
 	bool failed = false;
 
-	~Sprite()
-	{
-		if (texture != nullptr)
-		{
-			SDL_DestroyTexture(texture);
-		}
-	}
-
 	std::string toString() override
 	{
 		return src;

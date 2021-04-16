@@ -2,12 +2,29 @@
 #include "Console.h"
 
 #include <sstream>
+#include <algorithm>
 
 #ifndef _DEBUG
 static int maxLevel = LEVEL_INFO;
 #else
 static int maxLevel = LEVEL_VERBOSE;
 #endif
+
+// Internal cvars
+std::string cmdHelp()
+{
+	std::string output = "\n";
+
+	for (auto cvarPair : Console::getInstance().dumpVars(CVAR_NONE))
+	{
+		output.append(cvarPair.first);
+		output.push_back('\n');
+	}
+
+	return output;
+}
+
+CVar help = CVar("help", cmdHelp, 0);
 
 Console& Console::getInstance()
 {
@@ -84,7 +101,13 @@ std::string Console::parse(const std::string & command)
 		}
 	}
 
-	return cvarName + " = " + cvar->get();
+	std::string response = cvar->get(); 
+
+	if (cvar->isCmd()) {
+		return response;
+	}
+
+	return cvarName + " = " + response;
 }
 
 std::string Console::runCommand(const std::string & opcode, const std::string & operand)
@@ -110,11 +133,16 @@ void Console::print(const std::string & text, const std::string & source, const 
 
 CVarList Console::dumpVars(CVarFlags flags)
 {
+	// If no flags specified, return all
+	if (flags == CVAR_NONE) {
+		return cvars;
+	}
+
 	CVarList filteredList;
 
 	for (auto cvarPair : cvars)
 	{
-		if (cvarPair.second->hasFlag(flags))
+		if (cvarPair.second != NULL && cvarPair.second->hasFlag(flags))
 		{
 			filteredList[cvarPair.first] = cvarPair.second;
 		}
@@ -137,4 +165,20 @@ std::string Console::getCfgFile()
 	}
 
 	return out.str();
+}
+
+std::vector<std::string> Console::autocomplete(std::string userInput)
+{
+	std::vector<std::string> results;
+
+	for (auto cvarPair : cvars)
+	{
+		if (cvarPair.first.find(userInput) != std::string::npos) {
+			results.push_back(cvarPair.first);
+		}
+	}
+
+	std::sort(results.begin(), results.end(), [](std::string& s1, std::string& s2) { return s1.back() < s2.back(); });
+
+	return results;
 }

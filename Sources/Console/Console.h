@@ -34,6 +34,7 @@ public:
 
 	CVarList dumpVars(CVarFlags flags = CVAR_PERSIST);
 	std::string getCfgFile();
+	std::vector<std::string> autocomplete(std::string userInput);
 
 private:
 	Console();

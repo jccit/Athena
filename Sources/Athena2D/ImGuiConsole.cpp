@@ -69,10 +69,20 @@ void ImGuiConsole::renderPanel()
 
 int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)
 {
+    std::string input = std::string(data->Buf, data->BufTextLen);
+
 	switch (data->EventFlag)
 	{
     case ImGuiInputTextFlags_CallbackCompletion:
         // TODO: Add completion
+        {
+            std::vector<std::string> completions = Console::getInstance().autocomplete(input);
+            if (completions.size() > 0) {
+                data->DeleteChars(0, data->CursorPos);
+                data->InsertChars(data->CursorPos, completions[0].c_str());
+                data->InsertChars(data->CursorPos, " ");
+            }
+        }
         break;
     case ImGuiInputTextFlags_CallbackHistory:
         // TODO: Add history

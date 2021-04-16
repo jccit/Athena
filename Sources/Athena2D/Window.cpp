@@ -3,12 +3,12 @@
 #include <Console/Console.h>
 #include <Console/CVar.h>
 
-CVar width = CVar("r_width", 800, CVAR_PERSIST);
-CVar height = CVar("r_height", 600, CVAR_PERSIST);
-CVar fullscreen = CVar("r_fullscreen", false, CVAR_PERSIST);
-CVar borderless = CVar("r_borderless", false, CVAR_PERSIST);
-CVar vsync = CVar("r_vsync", false, CVAR_PERSIST);
-CVar software = CVar("r_software", false, CVAR_PERSIST);
+CVar width = CVar("r_width", 800, CVAR_PERSIST, "Width of the game window");
+CVar height = CVar("r_height", 600, CVAR_PERSIST, "Height of the game window");
+CVar fullscreen = CVar("r_fullscreen", false, CVAR_PERSIST, "0 for windowed, 1 for fullscreen mode");
+CVar borderless = CVar("r_borderless", false, CVAR_PERSIST, "1 to enable borderless window mode, set r_fullscreen to 0");
+CVar vsync = CVar("r_vsync", false, CVAR_PERSIST, "1 to enable vsync");
+CVar software = CVar("r_software", false, CVAR_PERSIST, "1 to enable software rendering");
 
 Window::Window()
 {

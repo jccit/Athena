@@ -133,6 +133,16 @@ bool CVar::set(std::string val)
 	return false;
 }
 
+void CVar::set(bool val)
+{
+	if (isBool()) {
+		boolVal = val;
+	}
+	else {
+		throw new std::runtime_error("Tried to set non-bool CVar to bool");
+	}
+}
+
 
 /**
  * \brief Returns the int value of the CVar, throws an error if not an int

@@ -8,8 +8,6 @@
 #include "Engine.h"
 
 #include <chrono>
-#include <SDL.h>
-#include <SDL_image.h>
 
 #include "World.h"
 #include "EventQueue.h"
@@ -144,7 +142,8 @@ void Engine::loop()
 		
 		while (SDL_PollEvent(&e))
 		{
-			ImGui_ImplSDL2_ProcessEvent(&e);
+			if (g_devMode)
+				ImGui_ImplSDL2_ProcessEvent(&e);
 			
 			bool down = true;
 			
@@ -159,8 +158,8 @@ void Engine::loop()
 				if (e.key.repeat == 0) {
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
 						world.togglePause();
-					
-					if (!ImGuiHelper::wantsKeyboard()) {
+
+					if (g_devMode && !ImGuiHelper::wantsKeyboard()) {
 						std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
 						EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
 					}

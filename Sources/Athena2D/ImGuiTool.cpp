@@ -6,13 +6,16 @@ void ImGuiTool::toggle()
 	showing = !showing;
 }
 
-void ImGuiTool::render()
+void ImGuiTool::handleInput()
 {
 	if (ImGui::IsKeyPressed(scancode))
 	{
 		toggle();
 	}
+}
 
+void ImGuiTool::render()
+{
 	if (showing)
 	{
 		renderPanel();

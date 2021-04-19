@@ -13,7 +13,14 @@ CVar software = CVar("r_software", false, CVAR_PERSIST, "1 to enable software re
 Window::Window()
 {
 	// BUG: SDL's D3D renderer is not clearing correctly when using imgui, set to opengl for now
-	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+#ifdef _WIN32
+	if (g_devMode) {
+		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	}
+#endif
 	Uint32 winFlags = 0;
 
 	if (!software.getBool())

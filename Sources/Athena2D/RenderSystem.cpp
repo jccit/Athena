@@ -3,37 +3,42 @@
 #include "Sprite.h"
 #include <Console/Console.h>
 #include <SDL_image.h>
-#include "ImGuiHelper.h"
-#include "TextureCacheViewer.h"
 #include <map>
 #include <set>
+#include "ImGuiHelper.h"
+#include "TextureCacheViewer.h"
 
 SDL_Renderer* renderer;
 ImGuiHelper* helper;
+
 std::map<std::string, SDL_Texture*> textureCache;
 uint64_t lastEntCount = 0;
 
 RenderSystem::RenderSystem()
 {
 	ignorePause = true;
-	helper = new ImGuiHelper();
+
+	if (g_devMode)
+		helper = new ImGuiHelper();
 }
 
 RenderSystem::~RenderSystem()
 {
-	delete helper;
+	if (g_devMode)
+		delete helper;
 }
 
 void RenderSystem::init(World* world)
 {
 	LOG("Init", "RenderSystem");
-	
+
 	win = new Window();
 	renderer = win->getRenderer();
 
-	helper->init(win, world);
-
-	helper->addTool(std::shared_ptr<TextureCacheViewer>(new TextureCacheViewer(&textureCache)));
+	if (g_devMode) {
+		helper->init(win, world);
+		helper->addTool(std::shared_ptr<TextureCacheViewer>(new TextureCacheViewer(&textureCache)));
+	}
 	
 	state = SystemState::ACTIVE;
 }
@@ -41,7 +46,10 @@ void RenderSystem::init(World* world)
 void RenderSystem::shutdown()
 {
 	LOG("Shutdown", "RenderSystem");
-	helper->shutdown();
+
+	if (g_devMode)
+		helper->shutdown();
+
 	delete win;
 }
 
@@ -75,7 +83,8 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 
 void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
 {	
-	helper->newFrame(deltaTime, win);
+	if (g_devMode)
+		helper->newFrame(deltaTime, win);
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -131,7 +140,9 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 
 void RenderSystem::afterUpdate(EntityList* entities, float deltaTime)
 {
-	ImGuiHelper::render();
+	if (g_devMode)
+		ImGuiHelper::render();
+
 	SDL_RenderPresent(renderer);
 
 	removeUnusedTextures(entities);

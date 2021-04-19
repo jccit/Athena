@@ -3,6 +3,7 @@
 class ImGuiTool
 {
 public:
+	void handleInput();
 	void render();
 	void renderMenu();
 	

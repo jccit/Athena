@@ -9,6 +9,8 @@
 
 // add headers that you want to pre-compile here
 #include <SDL.h>
+#include <SDL_image.h>
+#include "BootParams.h"
 #include "Entity.h"
 #include "Vec2.h"
 #include "EventQueue.h"

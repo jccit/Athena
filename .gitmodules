@@ -16,3 +16,6 @@
 [submodule "ThirdParty/imgui_sdl"]
 	path = ThirdParty/imgui_sdl
 	url = https://github.com/Tyyppi77/imgui_sdl.git
+[submodule "ThirdParty/argh"]
+	path = ThirdParty/argh
+	url = https://github.com/adishavit/argh

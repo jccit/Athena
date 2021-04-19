@@ -29,6 +29,7 @@ public:
 	std::string get();
 	std::string getHelp();
 	bool set(std::string val);
+	void set(bool val);
 
 	int getInt();
 	float getFloat();

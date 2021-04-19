@@ -1,20 +1,33 @@
+#include "pch.h"
 #include "ImGuiHelper.h"
 #include "ImGuiConsole.h"
 #include "EntityInspector.h"
+#include "PerfOverlay.h"
 #include <imgui_sdl.h>
 #include <imgui.h>
 #include <imgui/backends/imgui_impl_sdl.h>
 
 #include <Console/Console.h>
+#include <Console/CVar.h>
 
+CVar devEnable = CVar("dev_enable", g_devMode, CVAR_NONE, "Enable developer mode");
+CVar perfEnable = CVar("perf_enable", g_devMode, CVAR_NONE, "Enable perf overlay");
+
+PerfOverlay* perfOverlay;
+std::shared_ptr<ImGuiConsole> console;
 std::vector<std::shared_ptr<ImGuiTool>> tools;
 bool showDemo = false;
 
 ImGuiHelper::ImGuiHelper()
 {
-	auto console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
+	console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
 	Console::getInstance().registerOutput(console);
-	tools.push_back(console);
+
+	// Update CVars after boot
+	devEnable.set(g_devMode);
+	perfEnable.set(g_devMode);
+
+	perfOverlay = new PerfOverlay();
 }
 
 ImGuiHelper::~ImGuiHelper()
@@ -23,6 +36,8 @@ ImGuiHelper::~ImGuiHelper()
 	{
 		tool.reset();
 	}
+
+	delete perfOverlay;
 }
 
 void ImGuiHelper::init(Window* win, World* w)
@@ -62,32 +77,49 @@ void ImGuiHelper::newFrame(float delta, Window* win)
 	io.DeltaTime = delta;
 	
 	ImGui::NewFrame();
+
+	// Always handle input and render console
+	console->handleInput();
+	console->render();
+
+	bool showPerf = perfEnable.getBool();
+	bool showDev = devEnable.getBool();
+	if (showPerf) {
+		perfOverlay->render(showDev);
+	}
 	
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("Tools"))
+	if (showDev) {
+		if (ImGui::BeginMainMenuBar())
 		{
-			for (auto tool : tools)
+			if (ImGui::BeginMenu("Tools"))
 			{
-				tool->renderMenu();
+				console->renderMenu();
+
+				ImGui::Separator();
+
+				for (auto tool : tools)
+				{
+					tool->renderMenu();
+				}
+				ImGui::EndMenu();
 			}
-			ImGui::EndMenu();
+			if (ImGui::BeginMenu("Misc"))
+			{
+				ImGui::MenuItem("ImGui demo", NULL, &showDemo);
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
 		}
-		if (ImGui::BeginMenu("Misc"))
+
+		for (auto tool : tools)
 		{
-			ImGui::MenuItem("ImGui demo", NULL, &showDemo);
-			ImGui::EndMenu();
+			tool->handleInput();
+			tool->render();
 		}
-		ImGui::EndMainMenuBar();
-	}
 
-	for (auto tool : tools)
-	{
-		tool->render();
+		if (showDemo)
+			ImGui::ShowDemoWindow(&showDemo);
 	}
-
-	if (showDemo)
-		ImGui::ShowDemoWindow(&showDemo);
 }
 
 void ImGuiHelper::addTool(std::shared_ptr<ImGuiTool> tool)

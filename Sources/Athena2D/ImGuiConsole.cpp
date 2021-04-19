@@ -12,6 +12,8 @@ ImGuiConsole::ImGuiConsole()
     title = "Console";
     shortcut = "~";
     scancode = SDL_SCANCODE_GRAVE;
+    width = 520.0f;
+    height = 600.0f;
 
     memset(inputBuf, 0, sizeof(inputBuf));
 
@@ -26,45 +28,40 @@ static int staticTextCallback(ImGuiInputTextCallbackData* data)
 
 void ImGuiConsole::renderPanel()
 {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Console", &showing))
-    {
+    if (isShowing()) {
+        const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+        ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
+
+        for (auto message : messages)
+        {
+            ImGui::TextUnformatted(message.c_str());
+        }
+
+        ImGui::PopStyleVar();
+        ImGui::EndChild();
+        ImGui::Separator();
+
+        // Command-line
+        bool reclaim_focus = false;
+        ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
+        if (ImGui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags, &staticTextCallback, (void*)this))
+        {
+            char* s = inputBuf;
+            Strtrim(s);
+            if (s[0])
+                runCommand(s);
+            strcpy_s(s, 256, "");
+            reclaim_focus = true;
+        }
+
+        // Auto-focus on window apparition
+        ImGui::SetItemDefaultFocus();
+        if (reclaim_focus)
+            ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+
         ImGui::End();
-        return;
     }
-
-    const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-    ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-	
-    for (auto message : messages)
-    {
-        ImGui::TextUnformatted(message.c_str());
-    }
-
-    ImGui::PopStyleVar();
-    ImGui::EndChild();
-    ImGui::Separator();
-    
-    // Command-line
-    bool reclaim_focus = false;
-    ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    if (ImGui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags, &staticTextCallback, (void*)this))
-    {
-        char* s = inputBuf;
-        Strtrim(s);
-        if (s[0])
-            runCommand(s);
-        strcpy_s(s, 256, "");
-        reclaim_focus = true;
-    }
-
-    // Auto-focus on window apparition
-    ImGui::SetItemDefaultFocus();
-    if (reclaim_focus)
-        ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
-
-    ImGui::End();
 }
 
 int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)

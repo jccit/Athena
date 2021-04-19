@@ -4,6 +4,7 @@
 #include <Console/Console.h>
 #include <SDL_image.h>
 #include "ImGuiHelper.h"
+#include "TextureCacheViewer.h"
 #include <map>
 #include <set>
 
@@ -31,6 +32,8 @@ void RenderSystem::init(World* world)
 	renderer = win->getRenderer();
 
 	helper->init(win, world);
+
+	helper->addTool(std::shared_ptr<TextureCacheViewer>(new TextureCacheViewer(&textureCache)));
 	
 	state = SystemState::ACTIVE;
 }

@@ -186,6 +186,7 @@
     <ClCompile Include="ScriptSystem.cpp" />
     <ClCompile Include="SqVM.cpp" />
     <ClCompile Include="StdOutput.cpp" />
+    <ClCompile Include="TextureCacheViewer.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -216,6 +217,7 @@
     <ClInclude Include="SqVM.h" />
     <ClInclude Include="StdOutput.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TextureCacheViewer.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

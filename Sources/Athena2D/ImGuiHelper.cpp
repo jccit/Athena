@@ -90,6 +90,11 @@ void ImGuiHelper::newFrame(float delta, Window* win)
 		ImGui::ShowDemoWindow(&showDemo);
 }
 
+void ImGuiHelper::addTool(std::shared_ptr<ImGuiTool> tool)
+{
+	tools.push_back(tool);
+}
+
 void ImGuiHelper::render()
 {
 	ImGui::Render();

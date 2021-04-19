@@ -105,6 +105,9 @@
     <ClCompile Include="EntityInspector.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="TextureCacheViewer.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="EntityInspector.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureCacheViewer.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>

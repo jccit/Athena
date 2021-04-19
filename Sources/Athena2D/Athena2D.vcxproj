@@ -88,7 +88,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\;F:\Libraries\SDL-mirror-release-2.0.14\include;F:\Libraries\SDL2_image\include;..\..\ThirdParty;..\..\ThirdParty\argh;..\..\ThirdParty\squirrel\include;..\..\ThirdParty\simplesquirrel\include;..\..\ThirdParty\cereal\include;..\..\ThirdParty\box2d\include;..\..\ThirdParty\imgui;..\..\ThirdParty\imgui_sdl;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SDL-mirror-release-2.0.14\build\Release;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Release;..\..\ThirdParty\squirrel\build\lib\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>F:\Libraries\SDL-mirror-release-2.0.14\build\Release;F:\Libraries\SDL2_image\lib\x64;..\..\ThirdParty\simplesquirrel\build\Release;..\..\ThirdParty\squirrel\build\lib\Release;..\..\ThirdParty\box2d\build\bin\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

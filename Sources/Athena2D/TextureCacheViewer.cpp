@@ -40,7 +40,7 @@ void TextureCacheViewer::renderPanel()
                 int texWidth = 0;
                 int texHeight = 0;
                 SDL_QueryTexture(tex, nullptr, nullptr, &texWidth, &texHeight);
-                ImGui::Image((ImTextureID)tex, ImVec2(texWidth, texHeight));
+                ImGui::Image((ImTextureID)tex, ImVec2(static_cast<float>(texWidth), static_cast<float>(texHeight)));
             }
 
             ImGui::EndChild();

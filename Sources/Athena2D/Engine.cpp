@@ -159,7 +159,7 @@ void Engine::loop()
 					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
 						world.togglePause();
 
-					if (g_devMode && !ImGuiHelper::wantsKeyboard()) {
+					if (!g_devMode || !ImGuiHelper::wantsKeyboard()) {
 						std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
 						EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
 					}

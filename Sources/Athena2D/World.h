@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include <memory>
 #include <functional>
+#include <queue>
 
 #include <simplesquirrel/simplesquirrel.hpp>
 
@@ -57,6 +58,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<System>> systems;
+	std::queue<std::string> removeQueue;
 	std::string getNewID();
 	uint64_t lastID = 0;
 	Level level;

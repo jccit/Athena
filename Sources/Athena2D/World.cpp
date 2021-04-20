@@ -48,6 +48,15 @@ void World::tick(float deltaTime)
 	{
 		system->afterUpdate(&level.entities, deltaTime);
 	});
+
+	// Process our remove queue outside of any iterators
+	while (!removeQueue.empty()) {
+		std::string idToRemove = removeQueue.front();
+
+		level.entities.erase(idToRemove);
+
+		removeQueue.pop();
+	}
 }
 
 void World::fixedTick(float deltaTime)
@@ -104,7 +113,8 @@ Entity* World::newEntity(std::string id)
 
 void World::removeEntity(std::string id)
 {
-	level.entities.erase(id);
+	// Process the removal after each tick
+	removeQueue.push(id);
 }
 
 void World::registerSystem(System* system)

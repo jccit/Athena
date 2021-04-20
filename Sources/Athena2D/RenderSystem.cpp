@@ -130,8 +130,6 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 				sprite->height
 			};
 
-			std::cout << screenPos.x << std::endl;
-
 			if (entity->rot != 0)
 			{
 				SDL_Point centre = entity->origin.toPoint();

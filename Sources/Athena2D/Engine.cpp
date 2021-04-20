@@ -171,7 +171,9 @@ void Engine::loop()
 			case SDL_MOUSEBUTTONUP:
 				down = false;
 			case SDL_MOUSEBUTTONDOWN:
-				EventQueue::getInstance().publish(new MouseButtonEvent(e.button.button, down));
+				if (!g_devMode || !ImGuiHelper::wantsMouse()) {
+					EventQueue::getInstance().publish(new MouseButtonEvent(e.button.button, down));
+				}
 				break;
 			}
 		}

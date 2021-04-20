@@ -18,6 +18,7 @@ public:
 
 	static void render();
 	static bool wantsKeyboard();
+	static bool wantsMouse();
 
 private:
 	World* world;

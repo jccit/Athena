@@ -139,3 +139,9 @@ bool ImGuiHelper::wantsKeyboard()
 	return io.WantCaptureKeyboard;
 }
 
+bool ImGuiHelper::wantsMouse()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	return io.WantCaptureMouse;
+}
+

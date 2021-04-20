@@ -50,10 +50,13 @@ void Entity::addSprite(std::string src)
 	addComponent(sprite);
 }
 
-void Entity::addScript(std::string src, std::string className)
+void Entity::addScript(std::string src, std::string className, ssq::Table initialData)
 {
 	Script* script = new Script();
 	script->src = src;
 	script->className = className;
+
+	// Allocate some temp space for the init data
+	script->initialData = new ssq::Table(initialData);
 	addComponent(script);
 }

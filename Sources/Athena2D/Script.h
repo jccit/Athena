@@ -12,6 +12,8 @@ struct Script final : public Component
 	std::string src;
 	std::string className;
 
+	ssq::Table *initialData;
+
 	ssq::Instance* instance;
 	ssq::Function* init;
 	ssq::Function* update;

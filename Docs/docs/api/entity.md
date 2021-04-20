@@ -29,17 +29,19 @@ myEnt.addSprite("test.png");
 
 Attaches a script component to the entity. Requires a script file and Squirrel class name to be passed. A new instance of the class will be constructed for each entity the script is attached to.
 
+Optionally you can provide a table as the third parameter to be passed to the [init](EntityScript#init) function of the script.
+
 Signature:
 
 ```
-addScript(file: string, className: string)
+addScript(file: string, className: string, init: table)
 ```
 
 Usage example:
 
 ```
 local myEnt = world.newEntity("my-entity");
-myEnt.addScript("test.nut", "MyEntity");
+myEnt.addScript("test.nut", "MyEntity", {});
 ```
 
 ### translate
@@ -89,6 +91,10 @@ Type: string
 ### pos
 
 A 2d vector representing the entity's position
+
+:::danger
+You cannot change an entity's position by modifying this variable. Use moveTo or translate instead
+:::
 
 Type: vec2
 

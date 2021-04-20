@@ -89,7 +89,12 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 			script->mouseDown = findFunc(cls, "mouseDown");
 			script->mouseUp = findFunc(cls, "mouseUp");
 
-			callFunc(script, script->init);
+			if (script->init != nullptr)
+				callFunc(script, script->init, *script->initialData);
+
+			// Delete initial data after init finishes
+			if (script->initialData != nullptr)
+				delete script->initialData;
 		}
 	}
 }

@@ -60,7 +60,7 @@ public:
 	void moveTo(float x, float y);
 
 	void addSprite(std::string src);
-	void addScript(std::string src, std::string className);
+	void addScript(std::string src, std::string className, ssq::Table initialData);
 
 	static void expose(ssq::VM& vm)
 	{

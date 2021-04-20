@@ -20,14 +20,16 @@ The following are functions that EntityScripts can implement. These hooks corres
 
 This hook is called when the engine has finished creating and attaching an instance of your class to an entity. You can use this hook to call any code you need to do only once for each entity. This is what you would use in place of a constructor.
 
+Init receives a table of data that can be provided as part of the [Entity#addScript](Entity#addscript) function.
+
 Code example:
 
 ```
 class MyScript extends EntityScript {
     startingX = 0.0;
 
-    function init() {
-        startingX = entity.pos.x;
+    function init(data) {
+        startingX = data.startingX;
     }
 }
 ```

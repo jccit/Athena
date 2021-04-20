@@ -15,8 +15,13 @@ struct Script final : public Component
 	ssq::Instance* instance;
 	ssq::Function* init;
 	ssq::Function* update;
+
+	// Events
 	ssq::Function* keyDown;
 	ssq::Function* keyUp;
+	ssq::Function* mouseMove;
+	ssq::Function* mouseDown;
+	ssq::Function* mouseUp;
 
 	bool loaded = false;
 	bool failed = false;

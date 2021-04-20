@@ -209,6 +209,8 @@
     <ClInclude Include="ImGuiHelper.h" />
     <ClInclude Include="ImGuiTool.h" />
     <ClInclude Include="KeyboardEvent.h" />
+    <ClInclude Include="MouseButtonEvent.h" />
+    <ClInclude Include="MouseMoveEvent.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PerfOverlay.h" />
     <ClInclude Include="PhysicsSystem.h" />

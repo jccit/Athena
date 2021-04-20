@@ -79,6 +79,45 @@ class KeyEntity extends EntityScript {
 
 The keyUp hook functions in the same way as the keyDown hook, however it is fired when the key has been released.
 
+### mouseMove
+
+mouseMove is called whenever the engine detects any cursor movement. The script receives the absolute X and Y coordinates of the mouse on the screen.
+
+Code example:
+
+```
+class MouseEntity extends EntityScript {
+    function mouseMove(x, y) {
+        print(x);
+        print(y);
+    }
+}
+```
+
+### mouseDown
+
+The mouseDown hook is called whenever the user clicks a button on their mouse. The script receives the ID of the button they pressed.
+
+Mouse button IDs correspond to those used by SDL_MouseButtonEvent. For some examples, take a look at the button ID value table below the code example.
+
+Code example:
+
+```
+class MouseEntity extends EntityScript {
+    function mouseDown(button) {
+        print(button);
+    }
+}
+```
+
+Button ID values:
+
+| ID          | Name          |
+| ----------- | ------------- |
+| 1           | Left Button   |
+| 2           | Right Button  |
+| 3           | Middle Button |
+
 
 ## Variables
 

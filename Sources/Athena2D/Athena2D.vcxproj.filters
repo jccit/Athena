@@ -209,5 +209,11 @@
     <ClInclude Include="BootParams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MouseMoveEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseButtonEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

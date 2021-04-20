@@ -17,6 +17,8 @@ void ScriptSystem::init(World* world)
 	LOG("Init", "ScriptSystem");
 
 	EventQueue::getInstance().subscribe(this, &ScriptSystem::keyEventHandler);
+	EventQueue::getInstance().subscribe(this, &ScriptSystem::mouseMoveEventHandler);
+	EventQueue::getInstance().subscribe(this, &ScriptSystem::mouseButtonEventHandler);
 }
 
 void ScriptSystem::shutdown()
@@ -83,6 +85,9 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 			script->update = findFunc(cls, "update");
 			script->keyDown = findFunc(cls, "keyDown");
 			script->keyUp = findFunc(cls, "keyUp");
+			script->mouseMove = findFunc(cls, "mouseMove");
+			script->mouseDown = findFunc(cls, "mouseDown");
+			script->mouseUp = findFunc(cls, "mouseUp");
 
 			callFunc(script, script->init);
 		}
@@ -108,6 +113,38 @@ void ScriptSystem::beforeUpdate(EntityList* entities, float deltaTime)
 
 						if (evtFunc != nullptr)
 							callFunc(s, evtFunc, keyEvt->keyName);
+					}
+				}
+			}
+		}
+		else if (MouseMoveEvent* moveEvt = dynamic_cast<MouseMoveEvent*>(evt))
+		{
+			for (auto [id, entity] : *entities)
+			{
+				if (entity) {
+					std::shared_ptr<Script> s = entity->getComponent<Script>();
+					if (s && s->loaded && !s->failed)
+					{
+						ssq::Function* evtFunc = s->mouseMove;
+
+						if (evtFunc != nullptr)
+							callFunc(s, evtFunc, moveEvt->x, moveEvt->y);
+					}
+				}
+			}
+		}
+		else if (MouseButtonEvent* btnEvt = dynamic_cast<MouseButtonEvent*>(evt))
+		{
+			for (auto [id, entity] : *entities)
+			{
+				if (entity) {
+					std::shared_ptr<Script> s = entity->getComponent<Script>();
+					if (s && s->loaded && !s->failed)
+					{
+						ssq::Function* evtFunc = btnEvt->down ? s->mouseDown : s->mouseUp;
+
+						if (evtFunc != nullptr)
+							callFunc(s, evtFunc, btnEvt->button);
 					}
 				}
 			}
@@ -145,6 +182,16 @@ void ScriptSystem::afterFixedUpdate(EntityList* entities, float deltaTime)
 }
 
 void ScriptSystem::keyEventHandler(KeyboardEvent* evt)
+{
+	newEvents.push(evt);
+}
+
+void ScriptSystem::mouseMoveEventHandler(MouseMoveEvent* evt)
+{
+	newEvents.push(evt);
+}
+
+void ScriptSystem::mouseButtonEventHandler(MouseButtonEvent* evt)
 {
 	newEvents.push(evt);
 }

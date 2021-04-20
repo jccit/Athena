@@ -165,6 +165,14 @@ void Engine::loop()
 					}
 				}
 				break;
+			case SDL_MOUSEMOTION:
+				EventQueue::getInstance().publish(new MouseMoveEvent(e.motion.x, e.motion.y));
+				break;
+			case SDL_MOUSEBUTTONUP:
+				down = false;
+			case SDL_MOUSEBUTTONDOWN:
+				EventQueue::getInstance().publish(new MouseButtonEvent(e.button.button, down));
+				break;
 			}
 		}
 

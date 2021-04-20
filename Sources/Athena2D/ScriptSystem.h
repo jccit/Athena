@@ -9,6 +9,8 @@
 #include <queue>
 
 #include "KeyboardEvent.h"
+#include "MouseMoveEvent.h"
+#include "MouseButtonEvent.h"
 
 class ScriptSystem : public System
 {
@@ -28,6 +30,8 @@ public:
 	void afterFixedUpdate(EntityList* entities, float deltaTime) override;
 
 	void keyEventHandler(KeyboardEvent* evt);
+	void mouseMoveEventHandler(MouseMoveEvent* evt);
+	void mouseButtonEventHandler(MouseButtonEvent* evt);
 
 private:
 	static ssq::Function* findFunc(ssq::Class& cls, const std::string &name);

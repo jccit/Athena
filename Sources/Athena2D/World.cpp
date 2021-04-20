@@ -105,7 +105,12 @@ std::shared_ptr<Entity> World::getEntity(std::string id)
 
 Entity* World::newEntity(std::string id)
 {
-	Entity* ent = new Entity(id);
+	std::string newId = id;
+	if (level.entities.count(id) > 0) {
+		newId += std::to_string(getNewIDNum());
+	}
+
+	Entity* ent = new Entity(newId);
 	std::shared_ptr<Entity> sharedEnt = std::shared_ptr<Entity>(ent);
 	level.entities[ent->id] = sharedEnt;
 	return ent;
@@ -183,6 +188,11 @@ void World::togglePause()
 
 std::string World::getNewID()
 {
+	return "entity" + std::to_string(getNewIDNum());
+}
+
+uint64_t World::getNewIDNum()
+{
 	lastID++;
-	return "entity" + std::to_string(lastID);
+	return lastID;
 }

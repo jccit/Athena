@@ -76,6 +76,9 @@ void RenderSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 				return;
 			}
 
+			// Set origin to centre by default
+			entity->origin = Vec2(sprite->width / 2.0f, sprite->height / 2.0f);
+
 			sprite->loaded = true;
 		}
 	}
@@ -122,13 +125,9 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 
 			if (entity->rot != 0)
 			{
-				SDL_Point centre;
-				if (entity->origin.isZero())
-				{
-					centre = entity->origin.toPoint();
-				}
+				SDL_Point centre = entity->origin.toPoint();
 
-				SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, entity->origin.isZero() ? NULL : &centre, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, &centre, SDL_FLIP_NONE);
 			}
 			else
 			{

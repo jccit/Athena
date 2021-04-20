@@ -172,10 +172,12 @@
     <ClCompile Include="..\..\ThirdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\ThirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\ThirdParty\imgui_sdl\imgui_sdl.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityInspector.cpp" />
     <ClCompile Include="FileOutput.cpp" />
+    <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="ImGuiConsole.cpp" />
     <ClCompile Include="ImGuiHelper.cpp" />
     <ClCompile Include="ImGuiTool.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="..\..\ThirdParty\imgui\imgui.h" />
     <ClInclude Include="..\..\ThirdParty\imgui_sdl\imgui_sdl.h" />
     <ClInclude Include="BootParams.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CerealArchive.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
@@ -205,6 +208,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventQueue.h" />
     <ClInclude Include="FileOutput.h" />
+    <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="ImGuiConsole.h" />
     <ClInclude Include="ImGuiHelper.h" />
     <ClInclude Include="ImGuiTool.h" />

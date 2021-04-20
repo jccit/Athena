@@ -13,6 +13,8 @@ World::World()
 	REGISTER_COMPONENT(Sprite);
 	REGISTER_COMPONENT(Script);
 	REGISTER_COMPONENT(Rigidbody);
+
+	camera = new Camera();
 }
 
 void World::expose(ssq::VM& vm)

@@ -78,7 +78,7 @@ int Engine::init()
 	Entity* ent = new Entity();
 	Sprite* sprite = new Sprite();
 	Script* script = new Script();
-	sprite->src = "test.png";
+	sprite->src = "player.png";
 	script->src = "player.nut";
 	script->className = "Player";
 	ent->addComponent(sprite);

@@ -2,6 +2,7 @@
 
 #include "System.h"
 #include "Entity.h"
+#include "Camera.h"
 #include <memory>
 #include <functional>
 #include <queue>
@@ -55,6 +56,8 @@ public:
 	bool isPaused();
 	void setPaused(bool p);
 	void togglePause();
+
+	Camera* camera;
 
 private:
 	std::vector<std::shared_ptr<System>> systems;

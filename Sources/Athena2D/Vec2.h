@@ -21,9 +21,9 @@ struct Vec2
 
 	Vec2 operator+(const Vec2 &a)
 	{
-		x += a.x;
-		y += a.y;
-		return *this;
+		float x = this->x + a.x;
+		float y = this->y + a.y;
+		return Vec2(x, y);
 	}
 	
 	Vec2 operator+=(const Vec2& a)

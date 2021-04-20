@@ -7,6 +7,8 @@
 #include <set>
 #include "ImGuiHelper.h"
 #include "TextureCacheViewer.h"
+#include "FreeCamera.h"
+#include "World.h"
 
 SDL_Renderer* renderer;
 ImGuiHelper* helper;
@@ -34,10 +36,12 @@ void RenderSystem::init(World* world)
 
 	win = new Window();
 	renderer = win->getRenderer();
+	this->world = world;
 
 	if (g_devMode) {
 		helper->init(win, world);
 		helper->addTool(std::shared_ptr<TextureCacheViewer>(new TextureCacheViewer(&textureCache)));
+		helper->addTool(std::shared_ptr<FreeCamera>(new FreeCamera(world->camera)));
 	}
 	
 	state = SystemState::ACTIVE;
@@ -96,6 +100,7 @@ void RenderSystem::beforeUpdate(EntityList* entities, float deltaTime)
 void RenderSystem::update(EntityList* entities, float deltaTime)
 {
 	std::multimap<SpriteLayer, std::shared_ptr<Entity>> spriteOrder;
+	Vec2 camPos = world->camera->getPosition();
 
 	for (auto [id, unsortedEnt]: *entities)
 	{
@@ -116,17 +121,20 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 
 		if (sprite && sprite->loaded && !sprite->failed)
 		{
+			Vec2 screenPos = entity->pos + camPos;
+
 			SDL_Rect dst = {
-				static_cast<int>(entity->pos.x),
-				static_cast<int>(entity->pos.y),
+				static_cast<int>(screenPos.x),
+				static_cast<int>(screenPos.y),
 				sprite->width,
 				sprite->height
 			};
 
+			std::cout << screenPos.x << std::endl;
+
 			if (entity->rot != 0)
 			{
 				SDL_Point centre = entity->origin.toPoint();
-
 				SDL_RenderCopyEx(renderer, sprite->texture, NULL, &dst, entity->rot, &centre, SDL_FLIP_NONE);
 			}
 			else

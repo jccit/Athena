@@ -22,6 +22,7 @@ public:
 	void afterFixedUpdate(EntityList* entities, float deltaTime) override;
 private:
 	Window* win;
+	World* world;
 
 	SDL_Texture* getCachedTexture(std::string path);
 	void removeUnusedTextures(EntityList* entities);

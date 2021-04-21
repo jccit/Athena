@@ -1,9 +1,6 @@
 [submodule "ThirdParty/simplesquirrel"]
 	path = ThirdParty/simplesquirrel
 	url = https://github.com/matusnovak/simplesquirrel.git
-[submodule "ThirdParty/squirrel"]
-	path = ThirdParty/squirrel
-	url = https://github.com/albertodemichelis/squirrel.git
 [submodule "ThirdParty/cereal"]
 	path = ThirdParty/cereal
 	url = https://github.com/USCiLab/cereal.git

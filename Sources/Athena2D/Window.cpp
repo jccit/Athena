@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "BootParams.h"
 #include "Window.h"
 #include "SqVM.h"
 #include <Console/Console.h>

@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageBox.h">
+    <ClInclude Include="Paths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="String.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfMonitor.h">
+    <ClInclude Include="Raw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,13 +32,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MessageBox.cpp">
+    <ClCompile Include="Paths.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="String.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PerfMonitor.cpp">
+    <ClCompile Include="Raw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

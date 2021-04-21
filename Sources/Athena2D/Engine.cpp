@@ -22,7 +22,8 @@
 #include "FileOutput.h"
 #include "StdOutput.h"
 
-#include <Utils/Filesystem.h>
+#include <Filesystem/Raw.h>
+#include <Filesystem/Paths.h>
 #include <Console/CVar.h>
 
 #include <imgui/backends/imgui_impl_sdl.h>

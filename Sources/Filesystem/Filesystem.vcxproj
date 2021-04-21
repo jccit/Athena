@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{df7b5fce-8d77-4673-8ad0-a942e1135a6c}</ProjectGuid>
-    <RootNamespace>Utils</RootNamespace>
+    <ProjectGuid>{7b3400ee-1bce-4729-a407-e0f008ee0fd3}</ProjectGuid>
+    <RootNamespace>Filesystem</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,13 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\Libraries\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>F:\Libraries\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,16 +126,12 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>SDL2.lib</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,7 +143,6 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -158,26 +151,27 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>SDL2.lib</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MessageBox.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Paths.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PerfMonitor.h" />
-    <ClInclude Include="String.h" />
+    <ClInclude Include="Raw.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MessageBox.cpp" />
+    <ClCompile Include="Paths.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PerfMonitor.cpp" />
-    <ClCompile Include="String.cpp" />
+    <ClCompile Include="Raw.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.vcxproj">
+      <Project>{df7b5fce-8d77-4673-8ad0-a942e1135a6c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

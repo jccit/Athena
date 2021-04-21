@@ -235,6 +235,9 @@
     <ProjectReference Include="..\Console\Console.vcxproj">
       <Project>{debd7400-c0de-4f95-a035-98a20def1418}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Filesystem\Filesystem.vcxproj">
+      <Project>{7b3400ee-1bce-4729-a407-e0f008ee0fd3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.vcxproj">
       <Project>{df7b5fce-8d77-4673-8ad0-a942e1135a6c}</Project>
     </ProjectReference>

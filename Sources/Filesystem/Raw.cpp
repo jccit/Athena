@@ -1,30 +1,5 @@
 #include "pch.h"
-#include "Filesystem.h"
-#include "String.h"
-
-std::string FS_ExeDir()
-{
-	char buff[FILENAME_MAX];
-	_getcwd(buff, FILENAME_MAX);
-	std::string workingDir(buff);
-	return workingDir;
-}
-
-std::string FS_UserDir()
-{
-	LPWSTR path;
-	SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, NULL, &path);
-	std::string utf8Path = WideToUTF8(path);
-	return utf8Path;
-}
-
-std::string FS_SaveDir()
-{
-	LPWSTR path;
-	SHGetKnownFolderPath(FOLDERID_SavedGames, KF_FLAG_CREATE, NULL, &path);
-	std::string utf8Path = WideToUTF8(path);
-	return utf8Path;
-}
+#include "Raw.h"
 
 std::ifstream FS_OpenFileRead(std::string path, bool binary)
 {
@@ -61,7 +36,7 @@ std::string FS_ReadString(std::string path)
 	std::ifstream file = FS_OpenFileRead(path, false);
 	std::string output((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 	file.close();
-	
+
 	return output;
 }
 
@@ -81,7 +56,7 @@ std::ofstream FS_OpenFileWrite(std::string path, bool binary)
 void FS_WriteBytes(std::string path, char* data, size_t size)
 {
 	std::ofstream file = FS_OpenFileWrite(path);
-	file.write(data, size);	
+	file.write(data, size);
 	file.close();
 }
 

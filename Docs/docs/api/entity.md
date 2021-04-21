@@ -1,7 +1,6 @@
 ---
 title: Entity API
 sidebar_label: Entity
-sidebar_position: 3
 ---
 
 Entities can only be created using the [World](world) global. They contain a collection of components which the systems use to store state.

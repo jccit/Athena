@@ -12,6 +12,30 @@ The constructor of an EntityScript is used by the engine to setup your class wit
 Do not override the constructor! The EntityScript constructor must execute before your own code. To implement initialization code please use the init() hook
 :::
 
+### screenToWorld
+
+This utility function will use the camera's position to calculate where in world space a point in screen space will be.
+
+Code example:
+
+```
+screenToWorld(10.0, 20.0);
+```
+
+Type: vec2
+
+### worldToScreen
+
+This utility function will use the camera's position to calculate where the world space coordinate will show up on the screen.
+
+Code example:
+
+```
+worldToScreen(10.0, 20.0);
+```
+
+Type: vec2
+
 ## Hooks
 
 The following are functions that EntityScripts can implement. These hooks correspond to lifecycle events in the engine.

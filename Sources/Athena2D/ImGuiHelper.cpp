@@ -103,11 +103,13 @@ void ImGuiHelper::newFrame(float delta, Window* win)
 				}
 				ImGui::EndMenu();
 			}
+#ifdef _DEBUG
 			if (ImGui::BeginMenu("Misc"))
 			{
 				ImGui::MenuItem("ImGui demo", NULL, &showDemo);
 				ImGui::EndMenu();
 			}
+#endif
 			ImGui::EndMainMenuBar();
 		}
 
@@ -117,8 +119,10 @@ void ImGuiHelper::newFrame(float delta, Window* win)
 			tool->render();
 		}
 
+#ifdef _DEBUG
 		if (showDemo)
 			ImGui::ShowDemoWindow(&showDemo);
+#endif
 	}
 }
 

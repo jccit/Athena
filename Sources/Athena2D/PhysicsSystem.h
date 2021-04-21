@@ -2,6 +2,8 @@
 
 #include "System.h"
 
+#ifdef PHYSICS
+
 class PhysicsSystem : public System
 {
 public:
@@ -18,3 +20,4 @@ public:
 	void afterFixedUpdate(EntityList* entities, float deltaTime) override;
 };
 
+#endif

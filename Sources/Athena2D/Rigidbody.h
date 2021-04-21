@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef PHYSICS
 #include <box2d/b2_body.h>
 #include <cereal/types/polymorphic.hpp>
 #include "CerealArchive.h"
@@ -31,3 +32,4 @@ struct Rigidbody final : public Component
 
 CEREAL_REGISTER_TYPE(Rigidbody);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component, Rigidbody);
+#endif

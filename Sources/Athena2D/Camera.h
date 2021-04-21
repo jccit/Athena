@@ -21,7 +21,7 @@ public:
 
 private:
 	SqVM* vm;
-	ssq::Instance* instance;
+	ssq::Instance* instance = nullptr;
 	ssq::Function* onInit;
 	ssq::Function* onUpdate;
 };

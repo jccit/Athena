@@ -72,3 +72,8 @@ ipch/
 
 # SDL
 ThirdParty/SDL2
+
+# CMake
+build/
+out/
+CMakeSettings.json

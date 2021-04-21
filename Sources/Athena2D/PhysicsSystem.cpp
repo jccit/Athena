@@ -1,4 +1,5 @@
 #include "pch.h"
+#ifdef PHYSICS
 #include "PhysicsSystem.h"
 #include <box2d/b2_world.h>
 #include <box2d/b2_body.h>
@@ -131,3 +132,5 @@ void PhysicsSystem::fixedUpdate(std::shared_ptr<Entity> entity, float deltaTime)
 void PhysicsSystem::afterFixedUpdate(EntityList* entities, float deltaTime)
 {
 }
+
+#endif

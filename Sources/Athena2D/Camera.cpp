@@ -8,7 +8,8 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-	delete instance;
+	if (instance != nullptr)
+		delete instance;
 }
 
 void Camera::expose(ssq::VM& vm)

@@ -79,12 +79,14 @@ void EntityInspector::renderPanel()
                     ImGui::Text("Loaded: %s", script->loaded ? "true" : "false");
                 }
 
+#ifdef PHYSICS
                 auto rb = ent->getComponent<Rigidbody>();
                 if (rb && ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_None))
                 {
                     ImGui::Text("Width:  %d", rb->width);
                     ImGui::Text("Height: %d", rb->height);
                 }
+#endif
             }
 
             ImGui::EndChild();

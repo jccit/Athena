@@ -3,7 +3,10 @@
 #include "ComponentManager.h"
 #include "Script.h"
 #include "Sprite.h"
+
+#ifdef PHYSICS
 #include "Rigidbody.h"
+#endif
 
 #include <Filesystem/Raw.h>
 #include <Console/Console.h>
@@ -12,7 +15,10 @@ World::World()
 {
 	REGISTER_COMPONENT(Sprite);
 	REGISTER_COMPONENT(Script);
+
+#ifdef PHYSICS
 	REGISTER_COMPONENT(Rigidbody);
+#endif
 }
 
 void World::init()

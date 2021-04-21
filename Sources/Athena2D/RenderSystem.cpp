@@ -121,7 +121,7 @@ void RenderSystem::update(EntityList* entities, float deltaTime)
 
 		if (sprite && sprite->loaded && !sprite->failed)
 		{
-			Vec2 screenPos = entity->pos + camPos;
+			Vec2 screenPos = entity->pos - camPos;
 
 			SDL_Rect dst = {
 				static_cast<int>(screenPos.x),

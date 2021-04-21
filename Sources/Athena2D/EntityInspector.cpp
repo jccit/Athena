@@ -43,7 +43,7 @@ void EntityInspector::renderPanel()
             ImGui::Text("Selected: %s", selectedID.c_str());
             ImGui::Separator();
 
-            std::shared_ptr<Entity> ent = world->getEntity(selectedID);
+            auto ent = world->getEntity(selectedID);
 
             if (ent) {
                 ImGui::Text("Position:");

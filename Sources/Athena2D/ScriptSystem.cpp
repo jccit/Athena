@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "ScriptSystem.h"
+#include "World.h"
 
 SqVM* vm;
+World* worldPtr;
 
 ScriptSystem::ScriptSystem()
 {
@@ -15,6 +17,7 @@ ScriptSystem::~ScriptSystem()
 void ScriptSystem::init(World* world)
 {
 	LOG("Init", "ScriptSystem");
+	worldPtr = world;
 
 	EventQueue::getInstance().subscribe(this, &ScriptSystem::keyEventHandler);
 	EventQueue::getInstance().subscribe(this, &ScriptSystem::mouseMoveEventHandler);
@@ -81,13 +84,13 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 			if (script->failed)
 				return;
 
-			script->init = findFunc(cls, "init");
-			script->update = findFunc(cls, "update");
-			script->keyDown = findFunc(cls, "keyDown");
-			script->keyUp = findFunc(cls, "keyUp");
-			script->mouseMove = findFunc(cls, "mouseMove");
-			script->mouseDown = findFunc(cls, "mouseDown");
-			script->mouseUp = findFunc(cls, "mouseUp");
+			script->init = SqVM::findFunc(cls, "init");
+			script->update = SqVM::findFunc(cls, "update");
+			script->keyDown = SqVM::findFunc(cls, "keyDown");
+			script->keyUp = SqVM::findFunc(cls, "keyUp");
+			script->mouseMove = SqVM::findFunc(cls, "mouseMove");
+			script->mouseDown = SqVM::findFunc(cls, "mouseDown");
+			script->mouseUp = SqVM::findFunc(cls, "mouseUp");
 
 			if (script->init != nullptr)
 				callFunc(script, script->init, *script->initialData);
@@ -168,6 +171,9 @@ void ScriptSystem::update(EntityList* entities, float deltaTime)
 				callFunc(script, script->update, deltaTime);
 		}
 	}
+
+	// Update camera
+	worldPtr->camera->update(deltaTime);
 }
 
 void ScriptSystem::afterUpdate(EntityList* entities, float deltaTime)
@@ -199,19 +205,4 @@ void ScriptSystem::mouseMoveEventHandler(MouseMoveEvent* evt)
 void ScriptSystem::mouseButtonEventHandler(MouseButtonEvent* evt)
 {
 	newEvents.push(evt);
-}
-
-ssq::Function* ScriptSystem::findFunc(ssq::Class& cls, const std::string& name)
-{
-	try
-	{
-		ssq::Function func = cls.findFunc(name.c_str());
-		return new ssq::Function(func);
-	}
-	catch (...)
-	{
-		// can't find func, return null
-	}
-
-	return nullptr;
 }

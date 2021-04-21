@@ -13,8 +13,12 @@ World::World()
 	REGISTER_COMPONENT(Sprite);
 	REGISTER_COMPONENT(Script);
 	REGISTER_COMPONENT(Rigidbody);
+}
 
+void World::init()
+{
 	camera = new Camera();
+	camera->loadScript();
 }
 
 void World::expose(ssq::VM& vm)
@@ -99,9 +103,13 @@ void World::eachEntity(std::function<void(std::shared_ptr<Entity>)> callback)
 	}
 }
 
-std::shared_ptr<Entity> World::getEntity(std::string id)
+Entity* World::getEntity(std::string id)
 {
-	return level.entities[id];
+	if (level.entities.count(id) > 0) {
+		return level.entities[id].get();
+	}
+
+	return nullptr;
 }
 
 
@@ -142,6 +150,8 @@ void World::eachSystem(std::function<void(std::shared_ptr<System>)> callback)
 
 void World::shutdown()
 {	
+	delete camera;
+
 	for (auto& system : systems)
 	{
 		system->shutdown();
@@ -158,7 +168,7 @@ void World::loadLevel(const std::string &filePath)
 
 	level.clear();
 
-	archive(level);
+	archive(level);	
 
 	LOG("Loaded level " + filePath, "World");
 }

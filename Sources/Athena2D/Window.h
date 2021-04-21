@@ -19,5 +19,7 @@ public:
 private:
 	SDL_Window* win = nullptr;
 	SDL_Renderer* renderer = nullptr;
+
+	void updateSize();
 };
 

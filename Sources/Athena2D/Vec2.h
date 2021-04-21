@@ -33,6 +33,20 @@ struct Vec2
 		return *this;
 	}
 
+	Vec2 operator-(const Vec2& a)
+	{
+		float x = this->x - a.x;
+		float y = this->y - a.y;
+		return Vec2(x, y);
+	}
+
+	Vec2 operator-=(const Vec2& a)
+	{
+		x -= a.x;
+		y -= a.y;
+		return *this;
+	}
+
 	SDL_Point toPoint()
 	{
 		return SDL_Point{ static_cast<int>(x), static_cast<int>(y) };

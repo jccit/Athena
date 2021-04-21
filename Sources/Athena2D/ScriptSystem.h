@@ -34,25 +34,13 @@ public:
 	void mouseButtonEventHandler(MouseButtonEvent* evt);
 
 private:
-	static ssq::Function* findFunc(ssq::Class& cls, const std::string &name);
-
 	template<class... Args>
 	void callFunc(std::shared_ptr<Script> script, ssq::Function* func, Args... args)
 	{
 		if (script && script->loaded && !script->failed && script->instance != nullptr && func != nullptr)
 		{
-			try
-			{
-				SqVM::getInstance().vm->callFunc(*func, *script->instance, args...);
-			}
-			catch (ssq::RuntimeException& e)
-			{
-				LOG_ERROR(e.what(), script->src);
-				script->failed = true;
-			}
-			catch (ssq::TypeException& e)
-			{
-				LOG_ERROR(e.what(), script->src);
+			bool result = SqVM::getInstance().callFunc(script->src, script->instance, func, args...);
+			if (!result) {
 				script->failed = true;
 			}
 		}

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Window.h"
+#include "SqVM.h"
 #include <Console/Console.h>
 #include <Console/CVar.h>
 
@@ -32,6 +33,8 @@ Window::Window()
 	
 	win = SDL_CreateWindow("Foundation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width.getInt(), height.getInt(), winFlags);
 	LOG("Created window " + width.get() + "x" + height.get(), "Window");
+
+	updateSize();
 }
 
 Window::~Window()
@@ -86,4 +89,9 @@ int Window::getHeight()
 SDL_Window* Window::getSDLWindow()
 {
 	return win;
+}
+
+void Window::updateSize()
+{
+	SqVM::getInstance().exec("::screen <- { width = " + std::to_string(getWidth()) + ", height = " + std::to_string(getHeight()) + " }");
 }

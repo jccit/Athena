@@ -34,6 +34,8 @@ class World
 public:
 	World();
 
+	void init();
+
 	static void expose(ssq::VM& vm);
 	
 	void tick(float deltaTime);
@@ -41,7 +43,7 @@ public:
 
 	void addEntity(Entity* entity);
 	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);
-	std::shared_ptr<Entity> getEntity(std::string id);
+	Entity* getEntity(std::string id);
 	Entity* newEntity(std::string id);
 	void removeEntity(std::string id);
 	

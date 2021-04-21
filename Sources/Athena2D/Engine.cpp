@@ -62,13 +62,8 @@ int Engine::init()
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
-	
-	world.registerSystem(new RenderSystem());
-	world.registerSystem(new ScriptSystem());
-	// world.registerSystem(new PhysicsSystem());
 
 	SqVM::getInstance().runScript("core/EntityScript.nut");
-
 	SqVM::getInstance().exec("::world <- World();\nfunction _bindWorld(w){\nworld=w;\n}");
 	ssq::Function bindWorld = SqVM::getInstance().vm->findFunc("_bindWorld");
 	SqVM::getInstance().vm->callFunc(bindWorld, *SqVM::getInstance().vm, &world);
@@ -97,7 +92,11 @@ int Engine::init()
 	ent2->addComponent(sprite2);
 	world.addEntity(ent2);
 	
+	world.init();
 	world.saveLevel("test.lvl");
+
+	world.registerSystem(new RenderSystem());
+	world.registerSystem(new ScriptSystem());
 
 	//world.loadLevel("test.lvl");
 

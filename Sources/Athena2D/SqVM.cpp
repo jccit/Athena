@@ -12,6 +12,7 @@ SqVM::SqVM()
 	Vec2::expose(*vm);
 	Entity::expose(*vm);
 	World::expose(*vm);
+	Camera::expose(*vm);
 }
 
 SqVM::~SqVM() = default;
@@ -38,4 +39,19 @@ void SqVM::runScript(std::string path)
 	const std::string src = FS_ReadString("scripts/" + path);
 	ssq::Script script = vm->compileSource(src.c_str(), path.c_str());
 	vm->run(script);
+}
+
+ssq::Function* SqVM::findFunc(ssq::Class& cls, const std::string& name)
+{
+	try
+	{
+		ssq::Function func = cls.findFunc(name.c_str());
+		return new ssq::Function(func);
+	}
+	catch (...)
+	{
+		// can't find func, return null
+	}
+
+	return nullptr;
 }

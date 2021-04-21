@@ -9,6 +9,7 @@
 
 #include <chrono>
 
+#include "BootParams.h"
 #include "World.h"
 #include "EventQueue.h"
 

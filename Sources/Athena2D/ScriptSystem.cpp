@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ScriptSystem.h"
+#include "EventQueue.h"
 #include "World.h"
 
 SqVM* vm;

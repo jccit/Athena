@@ -51,7 +51,11 @@ void ImGuiConsole::renderPanel()
             Strtrim(s);
             if (s[0])
                 runCommand(s);
+#ifdef _WIN32
             strcpy_s(s, 256, "");
+#else
+            strcpy(s, "");
+#endif
             reclaim_focus = true;
         }
 

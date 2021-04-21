@@ -9,7 +9,7 @@ std::ifstream FS_OpenFileRead(std::string path, bool binary)
 	std::string realPath = path;
 #endif
 
-	std::ios::openmode openMode = binary ? std::ios::binary : 0;
+	std::ios::openmode openMode = binary ? std::ios::binary : static_cast<std::ios::openmode>(0);
 	std::ifstream file(path, openMode);
 	return file;
 }
@@ -48,7 +48,7 @@ std::ofstream FS_OpenFileWrite(std::string path, bool binary)
 	std::string realPath = path;
 #endif
 
-	std::ios::openmode openMode = binary ? std::ios::binary : 0;
+	std::ios::openmode openMode = binary ? std::ios::binary : static_cast<std::ios::openmode>(0);
 	std::ofstream file(path, openMode);
 	return file;
 }

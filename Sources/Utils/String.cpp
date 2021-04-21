@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "String.h"
 
+#ifdef _WIN32
 std::string WideToUTF8(std::wstring wstr)
 {
 	if (wstr.empty()) return std::string();
@@ -22,3 +23,4 @@ std::wstring UTF8ToWide(std::string str)
 
 	return wstr;
 }
+#endif

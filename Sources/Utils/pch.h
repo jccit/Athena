@@ -9,7 +9,5 @@
 
 // add headers that you want to pre-compile here
 #include <SDL.h>
-#include <direct.h>
-#include <ShlObj.h>
 
 #endif //PCH_H

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Engine.h"
+#include "BootParams.h"
 #include <Utils/MessageBox.h>
 #include <argh.h>
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ImGuiHelper.h"
+#include "BootParams.h"
 #include "ImGuiConsole.h"
 #include "EntityInspector.h"
 #include "PerfOverlay.h"

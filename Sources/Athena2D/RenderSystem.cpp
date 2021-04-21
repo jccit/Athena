@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "BootParams.h"
 #include "RenderSystem.h"
 #include "Sprite.h"
 #include <Console/Console.h>

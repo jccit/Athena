@@ -15,6 +15,10 @@
 #ifdef _WIN32
 #include <direct.h>
 #include <ShlObj.h>
+#else
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 #endif
 
 #endif //PCH_H

@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Component.h"
-#include <vcruntime_typeinfo.h>
 #include <unordered_map>
+
+#ifdef _WIN32
+#include <vcruntime_typeinfo.h>
+#endif
 
 #define REGISTER_COMPONENT(comp) ComponentManager::getInstance().registerComponent<comp>()
 #define COMPONENT_TYPE(comp) ComponentManager::getInstance().getComponentType<comp>()

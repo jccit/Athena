@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Raw.h"
+#include <filesystem>
 
 std::ifstream FS_OpenFileRead(std::string path, bool binary)
 {
@@ -47,6 +48,15 @@ std::ofstream FS_OpenFileWrite(std::string path, bool binary)
 #else
 	std::string realPath = path;
 #endif
+
+	// Create any folders if needed
+	std::filesystem::path p(realPath);
+	std::filesystem::path parentFolder = p.parent_path();
+	std::string parentFolderString = parentFolder.string();
+
+	if (!parentFolderString.empty() && !std::filesystem::exists(parentFolder)) {
+		std::filesystem::create_directories(parentFolder);
+	}
 
 	std::ios::openmode openMode = binary ? std::ios::binary : static_cast<std::ios::openmode>(0);
 	std::ofstream file(path, openMode);

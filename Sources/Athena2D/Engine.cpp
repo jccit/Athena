@@ -51,7 +51,10 @@ int Engine::init()
 	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new FileOutput()));
 	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new StdOutput()));
 
-	std::string cfg = FS_ReadString(FS_UserDir() + "\\Athena\\config.cfg");
+	std::string cfgPath = FS_ResolvePath(FS_ConfigDir() + "/config.cfg");
+	LOG("Loading config from: " + cfgPath, "Engine");
+
+	std::string cfg = FS_ReadString(cfgPath);
 	std::stringstream ss(cfg);
 	std::string cmd;
 
@@ -109,7 +112,7 @@ void Engine::shutdown()
 {
 	// Save cfg
 	std::string cfg = Console::getInstance().getCfgFile();
-	FS_WriteString(FS_UserDir() + "\\Athena\\config.cfg", cfg);
+	FS_WriteString(FS_ResolvePath(FS_ConfigDir() + "/config.cfg"), cfg);
 	
 	world.shutdown();
 

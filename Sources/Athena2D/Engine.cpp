@@ -96,7 +96,7 @@ int Engine::init()
 
 	Entity* ent2 = new Entity();
 	Sprite* sprite2 = new Sprite();
-	sprite2->src = "test.png";
+	sprite2->src = "player.png";
 	sprite2->layer = SpriteLayer::BACKGROUND;
 	ent2->pos = Vec2(50.0f, 10.0f);
 	ent2->rot = 60.0f;

@@ -1,0 +1,4 @@
+class CameraScript {
+    constructor() {
+    }
+}

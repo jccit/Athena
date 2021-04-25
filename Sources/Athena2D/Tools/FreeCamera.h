@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Camera.h"
-#include "ImGuiTool.h"
+#include "../Camera.h"
+#include "DevTool.h"
 
-class FreeCamera : public ImGuiTool {
+class FreeCamera : public DevTool {
 public:
     FreeCamera(Camera* cam);
 

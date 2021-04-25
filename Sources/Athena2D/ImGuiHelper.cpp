@@ -1,10 +1,10 @@
 #include "pch.h"
 
 #include "BootParams.h"
-#include "EntityInspector.h"
-#include "ImGuiConsole.h"
 #include "ImGuiHelper.h"
-#include "PerfOverlay.h"
+#include "Tools/DevConsole.h"
+#include "Tools/EntityInspector.h"
+#include "Tools/PerfOverlay.h"
 
 #include <imgui.h>
 #include <imgui/backends/imgui_impl_sdl.h>
@@ -14,13 +14,13 @@ CVar devEnable = CVar("dev_enable", g_devMode, CVAR_NONE, "Enable developer mode
 CVar perfEnable = CVar("perf_enable", g_devMode, CVAR_NONE, "Enable perf overlay");
 
 PerfOverlay* perfOverlay;
-std::shared_ptr<ImGuiConsole> console;
-std::vector<std::shared_ptr<ImGuiTool>> tools;
+std::shared_ptr<DevConsole> console;
+std::vector<std::shared_ptr<DevTool>> tools;
 bool showDemo = false;
 
 ImGuiHelper::ImGuiHelper()
 {
-    console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
+    console = std::shared_ptr<DevConsole>(new DevConsole());
     Console::getInstance().registerOutput(console);
 
     // Update CVars after boot
@@ -120,7 +120,7 @@ void ImGuiHelper::newFrame(float delta, Window* win)
     }
 }
 
-void ImGuiHelper::addTool(std::shared_ptr<ImGuiTool> tool)
+void ImGuiHelper::addTool(std::shared_ptr<DevTool> tool)
 {
     tools.push_back(tool);
 }

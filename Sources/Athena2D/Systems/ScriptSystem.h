@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Script.h"
-#include "SqVM.h"
-#include "System.h"
+#include "../Components/Script.h"
+#include "../SqVM.h"
+#include "../System.h"
 
-#include "KeyboardEvent.h"
-#include "MouseButtonEvent.h"
-#include "MouseMoveEvent.h"
+#include "../Events/KeyboardEvent.h"
+#include "../Events/MouseButtonEvent.h"
+#include "../Events/MouseMoveEvent.h"
 
 #include <queue>
 #include <set>

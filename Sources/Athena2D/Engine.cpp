@@ -12,13 +12,14 @@
 #include "EventQueue.h"
 #include "FileOutput.h"
 #include "ImGuiHelper.h"
-#include "RenderSystem.h"
-#include "Script.h"
-#include "ScriptSystem.h"
-#include "Sprite.h"
 #include "SqVM.h"
 #include "StdOutput.h"
 #include "World.h"
+
+#include "Components/Script.h"
+#include "Components/Sprite.h"
+#include "Systems/RenderSystem.h"
+#include "Systems/ScriptSystem.h"
 
 #include <chrono>
 

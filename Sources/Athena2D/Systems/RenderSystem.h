@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System.h"
-#include "Window.h"
+#include "../System.h"
+#include "../Window.h"
 
 class RenderSystem final : public System {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Event.h"
+#include "../Event.h"
 
 class MouseButtonEvent : public Event {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ImGuiTool.h"
+#include "Tools/DevTool.h"
 #include "Window.h"
 
 class World;
@@ -13,7 +13,7 @@ public:
     void init(Window* win, World* w);
     void shutdown();
     void newFrame(float delta, Window* win);
-    void addTool(std::shared_ptr<ImGuiTool> tool);
+    void addTool(std::shared_ptr<DevTool> tool);
 
     static void render();
     static bool wantsKeyboard();

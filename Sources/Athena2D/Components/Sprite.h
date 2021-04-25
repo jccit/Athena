@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CerealArchive.h"
-#include "Component.h"
+#include "../CerealArchive.h"
+#include "../Component.h"
 
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>

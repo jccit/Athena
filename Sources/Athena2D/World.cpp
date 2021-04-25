@@ -1,8 +1,8 @@
 #include "pch.h"
 
 #include "ComponentManager.h"
-#include "Script.h"
-#include "Sprite.h"
+#include "Components/Script.h"
+#include "Components/Sprite.h"
 #include "World.h"
 
 #ifdef PHYSICS

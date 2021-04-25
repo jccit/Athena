@@ -1,29 +1,29 @@
 #include "pch.h"
 
-#include "ImGuiTool.h"
+#include "DevTool.h"
 
 #include <imgui.h>
 
-void ImGuiTool::toggle()
+void DevTool::toggle()
 {
     showing = !showing;
 }
 
-void ImGuiTool::handleInput()
+void DevTool::handleInput()
 {
     if (ImGui::IsKeyPressed(scancode)) {
         toggle();
     }
 }
 
-void ImGuiTool::render()
+void DevTool::render()
 {
     if (showing) {
         renderPanel();
     }
 }
 
-bool ImGuiTool::isShowing()
+bool DevTool::isShowing()
 {
     ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin(title, &showing)) {
@@ -34,7 +34,7 @@ bool ImGuiTool::isShowing()
     return true;
 }
 
-void ImGuiTool::renderMenu()
+void DevTool::renderMenu()
 {
     ImGui::MenuItem(title, shortcut, &showing);
 }

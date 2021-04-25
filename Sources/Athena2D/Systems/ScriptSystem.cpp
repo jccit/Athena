@@ -1,8 +1,9 @@
 #include "pch.h"
 
-#include "EventQueue.h"
 #include "ScriptSystem.h"
-#include "World.h"
+
+#include "../EventQueue.h"
+#include "../World.h"
 
 SqVM* vm;
 World* worldPtr;

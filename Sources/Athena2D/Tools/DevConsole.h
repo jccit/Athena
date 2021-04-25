@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ImGuiTool.h"
+#include "DevTool.h"
 #include <Console/IOutput.h>
 #include <imgui.h>
 #include <vector>
 
-class ImGuiConsole : public IOutput, public ImGuiTool {
+class DevConsole : public IOutput, public DevTool {
 public:
-    ImGuiConsole();
+    DevConsole();
 
     void onPrint(std::string text, std::string source, OutputLevel level) override;
     int textCallback(ImGuiInputTextCallbackData* data);

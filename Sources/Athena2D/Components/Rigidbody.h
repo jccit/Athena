@@ -2,9 +2,9 @@
 
 #ifdef PHYSICS
 
-#include "CerealArchive.h"
-#include "Component.h"
-#include "Vec2.h"
+#include "../CerealArchive.h"
+#include "../Component.h"
+#include "../Vec2.h"
 
 #include <box2d/b2_body.h>
 #include <cereal/types/polymorphic.hpp>

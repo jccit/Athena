@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "ImGuiConsole.h"
+#include "DevConsole.h"
 
 #include <iostream>
 
@@ -15,7 +15,7 @@ static void Strtrim(char* s)
     *str_end = 0;
 }
 
-ImGuiConsole::ImGuiConsole()
+DevConsole::DevConsole()
 {
     title = "Console";
     shortcut = "~";
@@ -25,16 +25,16 @@ ImGuiConsole::ImGuiConsole()
 
     memset(inputBuf, 0, sizeof(inputBuf));
 
-    LOG_VERBOSE("Created console window", "ImGuiConsole");
+    LOG_VERBOSE("Created console window", "DevConsole");
 }
 
 static int staticTextCallback(ImGuiInputTextCallbackData* data)
 {
-    ImGuiConsole* console = (ImGuiConsole*)data->UserData;
+    DevConsole* console = (DevConsole*)data->UserData;
     return console->textCallback(data);
 }
 
-void ImGuiConsole::renderPanel()
+void DevConsole::renderPanel()
 {
     if (isShowing()) {
         const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
@@ -74,7 +74,7 @@ void ImGuiConsole::renderPanel()
     }
 }
 
-int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)
+int DevConsole::textCallback(ImGuiInputTextCallbackData* data)
 {
     std::string input = std::string(data->Buf, data->BufTextLen);
 
@@ -97,13 +97,13 @@ int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)
     return 0;
 }
 
-void ImGuiConsole::runCommand(std::string command)
+void DevConsole::runCommand(std::string command)
 {
     messages.push_back("> " + command);
     Console::getInstance().exec(command);
 }
 
-void ImGuiConsole::onPrint(std::string text, std::string source, OutputLevel level)
+void DevConsole::onPrint(std::string text, std::string source, OutputLevel level)
 {
     std::string prefix = levelToString(level);
     messages.push_back(prefix + "/" + source + ": " + text);

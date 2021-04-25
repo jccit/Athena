@@ -1,12 +1,13 @@
 #include "pch.h"
 
-#include "BootParams.h"
-#include "FreeCamera.h"
-#include "ImGuiHelper.h"
 #include "RenderSystem.h"
-#include "Sprite.h"
-#include "TextureCacheViewer.h"
-#include "World.h"
+
+#include "../BootParams.h"
+#include "../Components/Sprite.h"
+#include "../ImGuiHelper.h"
+#include "../Tools/FreeCamera.h"
+#include "../Tools/TextureCacheViewer.h"
+#include "../World.h"
 
 #include <map>
 #include <set>

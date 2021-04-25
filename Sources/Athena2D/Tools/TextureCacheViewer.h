@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ImGuiTool.h"
+#include "DevTool.h"
 
 #include <map>
 #include <string>
 
-class TextureCacheViewer : public ImGuiTool {
+class TextureCacheViewer : public DevTool {
 public:
     TextureCacheViewer(std::map<std::string, SDL_Texture*>* texCache);
 

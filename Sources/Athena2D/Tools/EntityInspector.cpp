@@ -2,9 +2,9 @@
 
 #include "EntityInspector.h"
 
-#include "Rigidbody.h"
-#include "Script.h"
-#include "Sprite.h"
+#include "../Components/Rigidbody.h"
+#include "../Components/Script.h"
+#include "../Components/Sprite.h"
 
 #include <imgui.h>
 

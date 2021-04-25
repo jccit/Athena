@@ -2,8 +2,8 @@
 
 #include "Entity.h"
 
-#include "Script.h"
-#include "Sprite.h"
+#include "Components/Script.h"
+#include "Components/Sprite.h"
 
 Entity::Entity()
 {

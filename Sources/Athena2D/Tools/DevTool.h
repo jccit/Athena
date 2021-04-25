@@ -1,6 +1,6 @@
 #pragma once
 
-class ImGuiTool {
+class DevTool {
 public:
     void handleInput();
     void render();

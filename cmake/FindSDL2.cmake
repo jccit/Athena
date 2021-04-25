@@ -147,6 +147,7 @@ because not all systems place things in SDL/ (see FreeBSD).
 
 # Define options for searching SDL2 Library in a custom path
 
+set(THIRD_PARTY_DIR "${PROJECT_SOURCE_DIR}/ThirdParty" CACHE STRING "Third party folder")
 set(SDL2_PATH "" CACHE STRING "Custom SDL2 Library path")
 
 set(_SDL2_NO_DEFAULT_PATH OFF)
@@ -167,6 +168,7 @@ endif()
 find_path(SDL2_INCLUDE_DIR SDL.h
   HINTS
     ENV SDL2DIR
+	${THIRD_PARTY_DIR}/*
     ${SDL2_NO_DEFAULT_PATH_CMD}
   PATH_SUFFIXES SDL2
                 # path suffixes to search inside ENV{SDL2DIR}
@@ -190,6 +192,7 @@ find_library(SDL2_LIBRARY
   HINTS
     ENV SDL2DIR
     ${SDL2_NO_DEFAULT_PATH_CMD}
+	${THIRD_PARTY_DIR}/*
   PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
   PATHS ${SDL2_PATH}
   DOC "Where the SDL2 Library can be found"
@@ -223,6 +226,7 @@ if(NOT SDL2_BUILDING_LIBRARY)
       HINTS
         ENV SDL2DIR
         ${SDL2_NO_DEFAULT_PATH_CMD}
+		${THIRD_PARTY_DIR}/*
       PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
       PATHS ${SDL2MAIN_LIBRARY_PATHS}
       DOC "Where the SDL2main library can be found"

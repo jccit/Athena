@@ -42,12 +42,14 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+set(THIRD_PARTY_DIR "${PROJECT_SOURCE_DIR}/ThirdParty" CACHE STRING "Third party folder")
 set(SDL2_IMAGE_PATH "" CACHE STRING "Custom SDL2_image Library path")
 
 find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
         HINTS
         ENV SDL2IMAGEDIR
         ENV SDL2DIR
+		${THIRD_PARTY_DIR}/*
         PATH_SUFFIXES SDL2
         # path suffixes to search inside ENV{SDLDIR}
         include/SDL2 include
@@ -65,6 +67,7 @@ find_library(SDL2_IMAGE_LIBRARY
         HINTS
         ENV SDL2IMAGEDIR
         ENV SDL2DIR
+		${THIRD_PARTY_DIR}/*
         PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
         PATHS ${SDL2_IMAGE_PATH}
         )

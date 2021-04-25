@@ -71,7 +71,7 @@ ipch/
 *.VC.VC.opendb
 
 # SDL
-ThirdParty/SDL2
+ThirdParty/SDL2*
 
 # CMake
 build/

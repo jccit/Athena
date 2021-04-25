@@ -14,6 +14,19 @@ jobs:
     
     - name: Setup environment
       uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Cache dependencies
+      id: cache-deps
+      uses: actions/cache@v2
+      with:
+        path: ThirdParty/SDL2*
+        key: deps-sdl2-windows
+
+    - name: Download dependencies
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      shell: cmd
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: call .\WinDownloadDeps.bat
     
     - name: Build
       shell: cmd
@@ -24,4 +37,4 @@ jobs:
       uses: actions/upload-artifact@v2.2.3
       with:
         name: Athena-Win-x64
-        path: ${{env.GITHUB_WORKSPACE}}/build/bin/Release/Athena-Win-x64.zip
+        path: build/bin/Release/Athena-Win-x64.zip

@@ -10,6 +10,10 @@ else()
 	find_package(SDL2 REQUIRED)
 endif()
 
+# Enable additional defines for the Debug build configuration
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+
 add_library(Utils STATIC "String.cpp" "PerfMonitor.cpp" "MessageBox.cpp")
 target_precompile_headers(Utils PRIVATE pch.h)
 

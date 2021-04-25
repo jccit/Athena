@@ -11,6 +11,10 @@ else()
 	find_package(SDL2_image REQUIRED)
 endif()
 
+# Enable additional defines for the Debug build configuration
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 file(GLOB IMGUI_SOURCES ../../ThirdParty/imgui/*.cpp)
 

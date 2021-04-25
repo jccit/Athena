@@ -63,6 +63,14 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 
 				script->instance = new ssq::Instance(instance);
 
+				script->init = SqVM::findFunc(cls, "init");
+				script->update = SqVM::findFunc(cls, "update");
+				script->keyDown = SqVM::findFunc(cls, "keyDown");
+				script->keyUp = SqVM::findFunc(cls, "keyUp");
+				script->mouseMove = SqVM::findFunc(cls, "mouseMove");
+				script->mouseDown = SqVM::findFunc(cls, "mouseDown");
+				script->mouseUp = SqVM::findFunc(cls, "mouseUp");
+
 				script->loaded = true;
 				script->failed = false;
 			}
@@ -84,14 +92,6 @@ void ScriptSystem::preload(std::shared_ptr<Entity> entity, float deltaTime)
 
 			if (script->failed)
 				return;
-
-			script->init = SqVM::findFunc(cls, "init");
-			script->update = SqVM::findFunc(cls, "update");
-			script->keyDown = SqVM::findFunc(cls, "keyDown");
-			script->keyUp = SqVM::findFunc(cls, "keyUp");
-			script->mouseMove = SqVM::findFunc(cls, "mouseMove");
-			script->mouseDown = SqVM::findFunc(cls, "mouseDown");
-			script->mouseUp = SqVM::findFunc(cls, "mouseUp");
 
 			if (script->init != nullptr)
 				callFunc(script, script->init, *script->initialData);

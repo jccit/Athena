@@ -30,6 +30,10 @@
 #include <imgui/backends/imgui_impl_sdl.h>
 #include "ImGuiHelper.h"
 
+#ifdef __EMSCRIPTEN__
+#include "emscripten.h"
+#endif
+
 World world;
 CVar timestep = CVar("phys_timestep", 60, CVAR_PERSIST);
 
@@ -48,8 +52,10 @@ struct TestStruct
 
 int Engine::init()
 {
-	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new FileOutput()));
 	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new StdOutput()));
+
+#ifndef __EMSCRIPTEN__
+	Console::getInstance().registerOutput(std::shared_ptr<IOutput>(new FileOutput()));
 
 	std::string cfgPath = FS_ResolvePath(FS_ConfigDir() + "/config.cfg");
 	LOG("Loading config from: " + cfgPath, "Engine");
@@ -62,6 +68,7 @@ int Engine::init()
 	{
 		Console::getInstance().exec(cmd);
 	}
+#endif
 
 	LOG("Init", "Engine");
 
@@ -103,6 +110,8 @@ int Engine::init()
 	world.registerSystem(new RenderSystem());
 	world.registerSystem(new ScriptSystem());
 
+	LOG_VERBOSE("Starting game loop", "Engine");
+
 	//world.loadLevel("test.lvl");
 
 	return 0;
@@ -110,9 +119,11 @@ int Engine::init()
 
 void Engine::shutdown()
 {
+	#ifndef __EMSCRIPTEN__
 	// Save cfg
 	std::string cfg = Console::getInstance().getCfgFile();
 	FS_WriteString(FS_ResolvePath(FS_ConfigDir() + "/config.cfg"), cfg);
+	#endif
 	
 	world.shutdown();
 
@@ -128,72 +139,71 @@ std::chrono::steady_clock::time_point previousTime;
 float accumulator = 0.0f;
 float fixedTimestep = 1.0f / static_cast<float>(timestep.getInt());
 bool firstRun = true;
+SDL_Event e;
 
-void Engine::loop()
+bool Engine::loop()
 {
-	bool running = true;
-	SDL_Event e;
-
-	LOG_VERBOSE("Starting game loop", "Engine");
-
-	while (running)
-	{
-		auto currentTime = std::chrono::steady_clock::now();
-		if (firstRun) {
-			previousTime = currentTime;
-			firstRun = false;
-		}
-		
-		while (SDL_PollEvent(&e))
-		{
-			if (g_devMode)
-				ImGui_ImplSDL2_ProcessEvent(&e);
-			
-			bool down = true;
-			
-			switch (e.type)
-			{
-			case SDL_QUIT:
-				running = false;
-				break;
-			case SDL_KEYUP:
-				down = false;
-			case SDL_KEYDOWN:
-				if (e.key.repeat == 0) {
-					if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-						world.togglePause();
-
-					if (!g_devMode || !ImGuiHelper::wantsKeyboard()) {
-						std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
-						EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
-					}
-				}
-				break;
-			case SDL_MOUSEMOTION:
-				EventQueue::getInstance().publish(new MouseMoveEvent(e.motion.x, e.motion.y));
-				break;
-			case SDL_MOUSEBUTTONUP:
-				down = false;
-			case SDL_MOUSEBUTTONDOWN:
-				if (!g_devMode || !ImGuiHelper::wantsMouse()) {
-					EventQueue::getInstance().publish(new MouseButtonEvent(e.button.button, down));
-				}
-				break;
-			}
-		}
-
-		auto elapsed = currentTime - previousTime;
-		float deltaTime = std::chrono::duration<float>(elapsed).count();
+	auto currentTime = std::chrono::steady_clock::now();
+	if (firstRun) {
 		previousTime = currentTime;
-		accumulator += deltaTime;
-		fixedTimestep = 1.0f / static_cast<float>(timestep.getInt());
-
-		while (accumulator >= fixedTimestep)
-		{
-			world.fixedTick(fixedTimestep);
-			accumulator -= fixedTimestep;
-		}
-
-		world.tick(deltaTime);
+		firstRun = false;
 	}
+	
+	while (SDL_PollEvent(&e))
+	{
+		if (g_devMode)
+			ImGui_ImplSDL2_ProcessEvent(&e);
+		
+		bool down = true;
+		
+		switch (e.type)
+		{
+		case SDL_QUIT:
+			#ifdef __EMSCRIPTEN__
+			emscripten_cancel_main_loop();
+			#endif
+
+			return false;
+			break;
+		case SDL_KEYUP:
+			down = false;
+		case SDL_KEYDOWN:
+			if (e.key.repeat == 0) {
+				if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+					world.togglePause();
+
+				if (!g_devMode || !ImGuiHelper::wantsKeyboard()) {
+					std::string keyName = std::string(SDL_GetKeyName(e.key.keysym.sym));
+					EventQueue::getInstance().publish(new KeyboardEvent(keyName, down));
+				}
+			}
+			break;
+		case SDL_MOUSEMOTION:
+			EventQueue::getInstance().publish(new MouseMoveEvent(e.motion.x, e.motion.y));
+			break;
+		case SDL_MOUSEBUTTONUP:
+			down = false;
+		case SDL_MOUSEBUTTONDOWN:
+			if (!g_devMode || !ImGuiHelper::wantsMouse()) {
+				EventQueue::getInstance().publish(new MouseButtonEvent(e.button.button, down));
+			}
+			break;
+		}
+	}
+
+	auto elapsed = currentTime - previousTime;
+	float deltaTime = std::chrono::duration<float>(elapsed).count();
+	previousTime = currentTime;
+	accumulator += deltaTime;
+	fixedTimestep = 1.0f / static_cast<float>(timestep.getInt());
+
+	while (accumulator >= fixedTimestep)
+	{
+		world.fixedTick(fixedTimestep);
+		accumulator -= fixedTimestep;
+	}
+
+	world.tick(deltaTime);
+
+	return true;
 }

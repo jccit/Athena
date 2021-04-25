@@ -6,6 +6,6 @@ public:
 	int init();
 	void shutdown();
 
-	void loop();
+	bool loop();
 };
 

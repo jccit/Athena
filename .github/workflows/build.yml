@@ -1,9 +1,12 @@
-name: Windows Build
+name: Build
 
-on: [push]
+on:
+  push:
+    branches:
+    - main
 
 jobs:
-  build:
+  winbuild:
     runs-on: windows-latest
 
     steps:
@@ -26,15 +29,15 @@ jobs:
       if: steps.cache-deps.outputs.cache-hit != 'true'
       shell: cmd
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: call .\WinDownloadDeps.bat
+      run: call .\Scripts\WinDownloadDeps.bat
     
     - name: Build
       shell: cmd
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: call .\WinBuild.bat
+      run: call .\Scripts\WinBuild.bat
       
     - name: Upload build artifact
       uses: actions/upload-artifact@v2.2.3
       with:
         name: Athena-Win-x64
-        path: build/bin/Release/Athena-Win-x64.zip
+        path: build/bin/Release/build

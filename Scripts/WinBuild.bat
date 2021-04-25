@@ -24,5 +24,3 @@ copy %sdlImgPath%\lib\x64\SDL2_image.dll %out%
 copy %sdlImgPath%\lib\x64\libpng16-16.dll %out%
 copy %sdlImgPath%\lib\x64\zlib1.dll %out%
 xcopy %rootDir%\Content %out% /e /i /h
-
-7z a Athena-Win-x64.zip %out%

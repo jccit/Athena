@@ -13,7 +13,7 @@ module.exports = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   guideSidebar: [
     'guides/welcome',
-    'guides/architechture',
+    'guides/architecture',
     {
       type: 'category',
       label: 'Components',

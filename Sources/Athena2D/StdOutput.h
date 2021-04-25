@@ -2,12 +2,10 @@
 
 #include <Console/IOutput.h>
 
-class StdOutput : public IOutput
-{
+class StdOutput : public IOutput {
 public:
-	StdOutput();
-	~StdOutput();
+    StdOutput();
+    ~StdOutput();
 
-	void onPrint(std::string text, std::string source, OutputLevel level) override;
+    void onPrint(std::string text, std::string source, OutputLevel level) override;
 };
-

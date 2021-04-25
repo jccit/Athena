@@ -1,42 +1,39 @@
 #pragma once
 
+#include "CerealArchive.h"
+#include "Component.h"
+
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
-#include "CerealArchive.h"
 
-#include "Component.h"
-#include <SDL.h>
-
-enum class SpriteLayer : int8_t
-{
-	BACKGROUND = -100,
-	FOREGROUND = 0,
-	CHARACTER = 50,
-	UI = 100
+enum class SpriteLayer : int8_t {
+    BACKGROUND = -100,
+    FOREGROUND = 0,
+    CHARACTER = 50,
+    UI = 100
 };
 
-struct Sprite final : public Component
-{
-	std::string src;
-	SpriteLayer layer;
-	SDL_Texture* texture;
+struct Sprite final : public Component {
+    std::string src;
+    SpriteLayer layer;
+    SDL_Texture* texture;
 
-	int width = 0;
-	int height = 0;
-	
-	bool loaded = false;
-	bool failed = false;
+    int width = 0;
+    int height = 0;
 
-	std::string toString() override
-	{
-		return src;
-	}
+    bool loaded = false;
+    bool failed = false;
 
-	template <class Archive>
-	void serialize(Archive &ar)
-	{
-		ar(CEREAL_NVP(src), CEREAL_NVP(layer));
-	}
+    std::string toString() override
+    {
+        return src;
+    }
+
+    template <class Archive>
+    void serialize(Archive& ar)
+    {
+        ar(CEREAL_NVP(src), CEREAL_NVP(layer));
+    }
 };
 
 CEREAL_REGISTER_TYPE(Sprite);

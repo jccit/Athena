@@ -3,16 +3,14 @@
 #include <Console/IOutput.h>
 #include <fstream>
 
-class FileOutput : public IOutput
-{
+class FileOutput : public IOutput {
 public:
-	FileOutput();
-	~FileOutput();
+    FileOutput();
+    ~FileOutput();
 
-	void onPrint(std::string text, std::string source, OutputLevel level) override;
+    void onPrint(std::string text, std::string source, OutputLevel level) override;
 
 private:
-	std::ofstream logFile;
-	std::string filePath;
+    std::ofstream logFile;
+    std::string filePath;
 };
-

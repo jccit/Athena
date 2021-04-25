@@ -1,25 +1,22 @@
 #pragma once
 
 #include <memory>
-#include <SDL.h>
 
-class Window
-{
+class Window {
 public:
-	Window();
-	~Window();
+    Window();
+    ~Window();
 
-	SDL_Renderer* getRenderer();
+    SDL_Renderer* getRenderer();
 
-	int getWidth();
-	int getHeight();
+    int getWidth();
+    int getHeight();
 
-	SDL_Window* getSDLWindow();
+    SDL_Window* getSDLWindow();
 
 private:
-	SDL_Window* win = nullptr;
-	SDL_Renderer* renderer = nullptr;
+    SDL_Window* win = nullptr;
+    SDL_Renderer* renderer = nullptr;
 
-	void updateSize();
+    void updateSize();
 };
-

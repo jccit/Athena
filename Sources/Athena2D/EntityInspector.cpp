@@ -1,9 +1,12 @@
+#include "pch.h"
+
 #include "EntityInspector.h"
-#include <imgui.h>
 
 #include "Rigidbody.h"
 #include "Script.h"
 #include "Sprite.h"
+
+#include <imgui.h>
 
 EntityInspector::EntityInspector(World* w)
 {
@@ -21,16 +24,15 @@ void EntityInspector::renderPanel()
         {
             ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 
-            world->eachEntity([](std::shared_ptr<Entity> ent)
-                {
-                    if (selectedID.empty())
-                        selectedID = ent->id;
+            world->eachEntity([](std::shared_ptr<Entity> ent) {
+                if (selectedID.empty())
+                    selectedID = ent->id;
 
-                    if (ent) {
-                        if (ImGui::Selectable(ent->id.c_str(), selectedID == ent->id))
-                            selectedID = ent->id;
-                    }
-                });
+                if (ent) {
+                    if (ImGui::Selectable(ent->id.c_str(), selectedID == ent->id))
+                        selectedID = ent->id;
+                }
+            });
 
             ImGui::EndChild();
         }
@@ -52,17 +54,24 @@ void EntityInspector::renderPanel()
                 ImGui::DragFloat("Rotation", &ent->rot, 1.0f);
 
                 auto sprite = ent->getComponent<Sprite>();
-                if (sprite && ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_None))
-                {
+                if (sprite && ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_None)) {
                     std::string layer = "";
 
-                    switch (sprite->layer)
-                    {
-                    case SpriteLayer::BACKGROUND: layer = "BACKGROUND"; break;
-                    case SpriteLayer::FOREGROUND: layer = "FOREGROUND"; break;
-                    case SpriteLayer::CHARACTER:  layer = "CHARACTER"; break;
-                    case SpriteLayer::UI:         layer = "UI"; break;
-                    default:                      layer = "UNKNOWN";
+                    switch (sprite->layer) {
+                    case SpriteLayer::BACKGROUND:
+                        layer = "BACKGROUND";
+                        break;
+                    case SpriteLayer::FOREGROUND:
+                        layer = "FOREGROUND";
+                        break;
+                    case SpriteLayer::CHARACTER:
+                        layer = "CHARACTER";
+                        break;
+                    case SpriteLayer::UI:
+                        layer = "UI";
+                        break;
+                    default:
+                        layer = "UNKNOWN";
                     }
 
                     ImGui::Text("Width:  %d", sprite->width);
@@ -73,16 +82,14 @@ void EntityInspector::renderPanel()
                 }
 
                 auto script = ent->getComponent<Script>();
-                if (script && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None))
-                {
+                if (script && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None)) {
                     ImGui::Text("Source: %s", script->src.c_str());
                     ImGui::Text("Loaded: %s", script->loaded ? "true" : "false");
                 }
 
 #ifdef PHYSICS
                 auto rb = ent->getComponent<Rigidbody>();
-                if (rb && ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_None))
-                {
+                if (rb && ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_None)) {
                     ImGui::Text("Width:  %d", rb->width);
                     ImGui::Text("Height: %d", rb->height);
                 }

@@ -8,7 +8,12 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
+#include <Console/CVar.h>
+#include <Console/Console.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <map>
+#include <string>
+#include <vector>
 
 #endif //PCH_H

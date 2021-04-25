@@ -1,11 +1,9 @@
 #pragma once
 
-class Engine
-{
+class Engine {
 public:
-	int init();
-	void shutdown();
+    int init();
+    void shutdown();
 
-	bool loop();
+    bool loop();
 };
-

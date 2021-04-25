@@ -1,11 +1,19 @@
+#include "pch.h"
+
 #include "ImGuiConsole.h"
-#include <imgui.h>
+
 #include <iostream>
-#include <SDL.h>
-#include <Console/Console.h>
+
+#include <imgui.h>
 
 char inputBuf[256];
-static void  Strtrim(char* s) { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; }
+static void Strtrim(char* s)
+{
+    char* str_end = s + strlen(s);
+    while (str_end > s && str_end[-1] == ' ')
+        str_end--;
+    *str_end = 0;
+}
 
 ImGuiConsole::ImGuiConsole()
 {
@@ -33,8 +41,7 @@ void ImGuiConsole::renderPanel()
         ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
-        for (auto message : messages)
-        {
+        for (auto message : messages) {
             ImGui::TextUnformatted(message.c_str());
         }
 
@@ -45,8 +52,7 @@ void ImGuiConsole::renderPanel()
         // Command-line
         bool reclaim_focus = false;
         ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-        if (ImGui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags, &staticTextCallback, (void*)this))
-        {
+        if (ImGui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags, &staticTextCallback, (void*)this)) {
             char* s = inputBuf;
             Strtrim(s);
             if (s[0])
@@ -72,8 +78,7 @@ int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)
 {
     std::string input = std::string(data->Buf, data->BufTextLen);
 
-	switch (data->EventFlag)
-	{
+    switch (data->EventFlag) {
     case ImGuiInputTextFlags_CallbackCompletion:
         // TODO: Add completion
         {
@@ -88,7 +93,7 @@ int ImGuiConsole::textCallback(ImGuiInputTextCallbackData* data)
     case ImGuiInputTextFlags_CallbackHistory:
         // TODO: Add history
         break;
-	}
+    }
     return 0;
 }
 
@@ -101,5 +106,5 @@ void ImGuiConsole::runCommand(std::string command)
 void ImGuiConsole::onPrint(std::string text, std::string source, OutputLevel level)
 {
     std::string prefix = levelToString(level);
-	messages.push_back(prefix + "/" + source + ": " + text);
+    messages.push_back(prefix + "/" + source + ": " + text);
 }

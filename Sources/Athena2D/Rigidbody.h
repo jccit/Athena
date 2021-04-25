@@ -1,33 +1,34 @@
 #pragma once
 
 #ifdef PHYSICS
-#include <box2d/b2_body.h>
-#include <cereal/types/polymorphic.hpp>
+
 #include "CerealArchive.h"
 #include "Component.h"
 #include "Vec2.h"
 
-struct Rigidbody final : public Component
-{
-	int width = 0;
-	int height = 0;
-	b2BodyType type = b2_dynamicBody;
+#include <box2d/b2_body.h>
+#include <cereal/types/polymorphic.hpp>
 
-	b2Body* body;
+struct Rigidbody final : public Component {
+    int width = 0;
+    int height = 0;
+    b2BodyType type = b2_dynamicBody;
 
-	// Used for calculating static obj velocity
-	Vec2 lastPos;
+    b2Body* body;
 
-	std::string toString() override
-	{
-		return "rigidbody";
-	}
+    // Used for calculating static obj velocity
+    Vec2 lastPos;
 
-	template <class Archive>
-	void serialize(Archive& ar)
-	{
-		ar(CEREAL_NVP(width), CEREAL_NVP(height), CEREAL_NVP(type));
-	}
+    std::string toString() override
+    {
+        return "rigidbody";
+    }
+
+    template <class Archive>
+    void serialize(Archive& ar)
+    {
+        ar(CEREAL_NVP(width), CEREAL_NVP(height), CEREAL_NVP(type));
+    }
 };
 
 CEREAL_REGISTER_TYPE(Rigidbody);

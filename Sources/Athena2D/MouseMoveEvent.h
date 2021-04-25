@@ -2,15 +2,14 @@
 
 #include "Event.h"
 
-class MouseMoveEvent : public Event
-{
+class MouseMoveEvent : public Event {
 public:
-	MouseMoveEvent(int x, int y)
-	{
-		this->x = x;
-		this->y = y;
-	}
+    MouseMoveEvent(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
 
-	int x;
-	int y;
+    int x;
+    int y;
 };

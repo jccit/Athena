@@ -1,17 +1,19 @@
+#include "pch.h"
+
 #include "TextureCacheViewer.h"
+
 #include <imgui.h>
-#include <string>
 
 TextureCacheViewer::TextureCacheViewer(std::map<std::string, SDL_Texture*>* texCache)
 {
-	title = "Texture Cache Viewer";
+    title = "Texture Cache Viewer";
     cache = texCache;
 }
 
 std::string selectedTexture;
 void TextureCacheViewer::renderPanel()
 {
-	if (isShowing()) {
+    if (isShowing()) {
         // left
         {
             ImGui::BeginChild("items", ImVec2(200, 0), true);
@@ -23,7 +25,6 @@ void TextureCacheViewer::renderPanel()
 
                 if (ImGui::Selectable(cacheEntry.first.c_str(), selectedTexture == cacheEntry.first))
                     selectedTexture = cacheEntry.first;
-
             }
 
             ImGui::EndChild();
@@ -47,5 +48,5 @@ void TextureCacheViewer::renderPanel()
         }
 
         ImGui::End();
-	}
+    }
 }

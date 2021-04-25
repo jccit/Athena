@@ -1,23 +1,22 @@
 #pragma once
 
-class ImGuiTool
-{
+class ImGuiTool {
 public:
-	void handleInput();
-	void render();
-	void renderMenu();
-	
-	void toggle();
+    void handleInput();
+    void render();
+    void renderMenu();
 
-	bool showing = false;
+    void toggle();
+
+    bool showing = false;
 
 protected:
-	virtual void renderPanel() = 0;
-	bool isShowing();
-	
-	const char* title = "Tool";
-	const char* shortcut = 0;
-	int scancode = -1;
-	float width = 600.0f;
-	float height = 600.0f;
+    virtual void renderPanel() = 0;
+    bool isShowing();
+
+    const char* title = "Tool";
+    const char* shortcut = 0;
+    int scancode = -1;
+    float width = 600.0f;
+    float height = 600.0f;
 };

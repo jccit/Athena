@@ -1,19 +1,17 @@
 #pragma once
 
-#include "ImGuiTool.h"
 #include "Camera.h"
+#include "ImGuiTool.h"
 
-class FreeCamera : public ImGuiTool
-{
+class FreeCamera : public ImGuiTool {
 public:
-	FreeCamera(Camera* cam);
+    FreeCamera(Camera* cam);
 
 protected:
-	void renderPanel() override;
+    void renderPanel() override;
 
 private:
-	Camera* camera;
-	bool enabled = false;
-	Vec2 lastPos;
+    Camera* camera;
+    bool enabled = false;
+    Vec2 lastPos;
 };
-

@@ -8,17 +8,17 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
-#include <string>
-#include <fstream>
 #include <Utils/String.h>
+#include <fstream>
+#include <string>
 
 #ifdef _WIN32
-#include <direct.h>
 #include <ShlObj.h>
+#include <direct.h>
 #else
-#include <unistd.h>
-#include <sys/types.h>
 #include <pwd.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif
 
 #endif //PCH_H

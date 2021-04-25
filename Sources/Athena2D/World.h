@@ -1,75 +1,72 @@
 #pragma once
 
-#include "System.h"
-#include "Entity.h"
 #include "Camera.h"
-#include <memory>
+#include "CerealArchive.h"
+#include "Entity.h"
+#include "System.h"
+
 #include <functional>
+#include <memory>
 #include <queue>
 
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
 #include <simplesquirrel/simplesquirrel.hpp>
 
-#include <cereal/types/vector.hpp>
-#include <cereal/types/memory.hpp>
-#include "CerealArchive.h"
+struct Level {
+    EntityList entities;
 
-struct Level
-{
-	EntityList entities;
+    void clear()
+    {
+        entities.clear();
+    }
 
-	void clear()
-	{
-		entities.clear();
-	}
-
-	template <class Archive>
-	void serialize(Archive &ar)
-	{
-		ar(CEREAL_NVP(entities));
-	}
+    template <class Archive>
+    void serialize(Archive& ar)
+    {
+        ar(CEREAL_NVP(entities));
+    }
 };
 
-class World
-{
+class World {
 public:
-	World();
+    World();
 
-	void init();
+    void init();
 
-	static void expose(ssq::VM& vm);
-	
-	void tick(float deltaTime);
-	void fixedTick(float deltaTime);
+    static void expose(ssq::VM& vm);
 
-	void addEntity(Entity* entity);
-	void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);
-	Entity* getEntity(std::string id);
-	Entity* newEntity(std::string id);
-	void removeEntity(std::string id);
-	
-	void registerSystem(System* system);
-	void eachSystem(std::function<void(std::shared_ptr<System>)> callback);
+    void tick(float deltaTime);
+    void fixedTick(float deltaTime);
 
-	void shutdown();
+    void addEntity(Entity* entity);
+    void eachEntity(std::function<void(std::shared_ptr<Entity>)> callback);
+    Entity* getEntity(std::string id);
+    Entity* newEntity(std::string id);
+    void removeEntity(std::string id);
 
-	void loadLevel(const std::string &filePath);
-	void saveLevel(const std::string &filePath);
+    void registerSystem(System* system);
+    void eachSystem(std::function<void(std::shared_ptr<System>)> callback);
 
-	bool isPaused();
-	void setPaused(bool p);
-	void togglePause();
+    void shutdown();
 
-	Camera* camera;
+    void loadLevel(const std::string& filePath);
+    void saveLevel(const std::string& filePath);
+
+    bool isPaused();
+    void setPaused(bool p);
+    void togglePause();
+
+    Camera* camera;
 
 private:
-	std::vector<std::shared_ptr<System>> systems;
-	std::queue<std::string> removeQueue;
+    std::vector<std::shared_ptr<System>> systems;
+    std::queue<std::string> removeQueue;
 
-	std::string getNewID();
-	uint64_t getNewIDNum();
+    std::string getNewID();
+    uint64_t getNewIDNum();
 
-	uint64_t lastID = 0;
-	Level level;
-	bool paused = false;
+    uint64_t lastID = 0;
+    Level level;
+    bool paused = false;
 };
-

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <fstream>
+#include <string>
 
 std::ifstream FS_OpenFileRead(std::string path, bool binary = true);
 char* FS_ReadBytes(std::string path, size_t* size);

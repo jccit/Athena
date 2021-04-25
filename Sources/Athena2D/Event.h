@@ -1,7 +1,6 @@
 #pragma once
 
-class Event
-{
+class Event {
 protected:
-	virtual ~Event() = default;
+    virtual ~Event() = default;
 };

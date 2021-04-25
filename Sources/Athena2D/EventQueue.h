@@ -7,91 +7,92 @@
 
 class HandlerFunctionBase {
 public:
-	// Call the member function
-	void exec(Event* evnt) {
-		call(evnt);
-	}
+    // Call the member function
+    void exec(Event* evnt)
+    {
+        call(evnt);
+    }
+
 private:
-	// Implemented by MemberFunctionHandler
-	virtual void call(Event* evnt) = 0;
+    // Implemented by MemberFunctionHandler
+    virtual void call(Event* evnt) = 0;
 };
 
-template<class T, class EventType>
-class MemberFunctionHandler : public HandlerFunctionBase
-{
+template <class T, class EventType>
+class MemberFunctionHandler : public HandlerFunctionBase {
 public:
-	typedef void (T::* MemberFunction)(EventType*);
+    typedef void (T::*MemberFunction)(EventType*);
 
-	MemberFunctionHandler(T* instance, MemberFunction memberFunction) : instance{ instance }, memberFunction{ memberFunction } {};
+    MemberFunctionHandler(T* instance, MemberFunction memberFunction)
+        : instance { instance }
+        , memberFunction { memberFunction } {};
 
-	void call(Event* evnt) {
-		// Cast event to the correct type and call member function
-		(instance->*memberFunction)(static_cast<EventType*>(evnt));
-	}
+    void call(Event* evnt)
+    {
+        // Cast event to the correct type and call member function
+        (instance->*memberFunction)(static_cast<EventType*>(evnt));
+    }
+
 private:
-	// Pointer to class instance
-	T* instance;
+    // Pointer to class instance
+    T* instance;
 
-	// Pointer to member function
-	MemberFunction memberFunction;
+    // Pointer to member function
+    MemberFunction memberFunction;
 };
 
 typedef std::vector<HandlerFunctionBase*> Handlers;
 
-class EventQueue
-{
+class EventQueue {
 public:
-	static EventQueue& getInstance()
-	{
-		static EventQueue instance;
-		return instance;
-	}
-	
-	~EventQueue() = default;
-	
-	template<class T, class EventType>
-	void subscribe(T* instance, void (T::*memberFunction)(EventType *))
-	{
-		Handlers* handlers = eventHandlers[typeid(EventType)];
+    static EventQueue& getInstance()
+    {
+        static EventQueue instance;
+        return instance;
+    }
 
-		if (handlers == nullptr)
-		{
-			handlers = new Handlers();
-			eventHandlers[typeid(EventType)] = handlers;
-		}
+    ~EventQueue() = default;
 
-		handlers->push_back(new MemberFunctionHandler<T, EventType>(instance, memberFunction));
-	}
+    template <class T, class EventType>
+    void subscribe(T* instance, void (T::*memberFunction)(EventType*))
+    {
+        Handlers* handlers = eventHandlers[typeid(EventType)];
 
-	template<typename EventType>
-	void publish(EventType* evnt) {
-		Handlers* handlers = eventHandlers[typeid(EventType)];
+        if (handlers == nullptr) {
+            handlers = new Handlers();
+            eventHandlers[typeid(EventType)] = handlers;
+        }
 
-		if (handlers == nullptr) {
-			return;
-		}
+        handlers->push_back(new MemberFunctionHandler<T, EventType>(instance, memberFunction));
+    }
 
-		for (auto& handler : *handlers) {
-			if (handler != nullptr) {
-				handler->exec(evnt);
-			}
-		}
-	}
+    template <typename EventType>
+    void publish(EventType* evnt)
+    {
+        Handlers* handlers = eventHandlers[typeid(EventType)];
 
-	void shutdown()
-	{
-		for (auto ehPair : eventHandlers)
-		{
-			for (auto handler : *ehPair.second)
-			{
-				delete handler;
-			}
+        if (handlers == nullptr) {
+            return;
+        }
 
-			delete ehPair.second;
-		}
-	}
-	
+        for (auto& handler : *handlers) {
+            if (handler != nullptr) {
+                handler->exec(evnt);
+            }
+        }
+    }
+
+    void shutdown()
+    {
+        for (auto ehPair : eventHandlers) {
+            for (auto handler : *ehPair.second) {
+                delete handler;
+            }
+
+            delete ehPair.second;
+        }
+    }
+
 private:
-	std::map<std::type_index, std::vector<HandlerFunctionBase*>*> eventHandlers;
+    std::map<std::type_index, std::vector<HandlerFunctionBase*>*> eventHandlers;
 };
-

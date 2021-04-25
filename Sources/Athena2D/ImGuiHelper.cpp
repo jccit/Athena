@@ -1,15 +1,14 @@
 #include "pch.h"
-#include "ImGuiHelper.h"
+
 #include "BootParams.h"
-#include "ImGuiConsole.h"
 #include "EntityInspector.h"
+#include "ImGuiConsole.h"
+#include "ImGuiHelper.h"
 #include "PerfOverlay.h"
-#include <imgui_sdl.h>
+
 #include <imgui.h>
 #include <imgui/backends/imgui_impl_sdl.h>
-
-#include <Console/Console.h>
-#include <Console/CVar.h>
+#include <imgui_sdl.h>
 
 CVar devEnable = CVar("dev_enable", g_devMode, CVAR_NONE, "Enable developer mode");
 CVar perfEnable = CVar("perf_enable", g_devMode, CVAR_NONE, "Enable perf overlay");
@@ -21,132 +20,125 @@ bool showDemo = false;
 
 ImGuiHelper::ImGuiHelper()
 {
-	console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
-	Console::getInstance().registerOutput(console);
+    console = std::shared_ptr<ImGuiConsole>(new ImGuiConsole());
+    Console::getInstance().registerOutput(console);
 
-	// Update CVars after boot
-	devEnable.set(g_devMode);
-	perfEnable.set(g_devMode);
+    // Update CVars after boot
+    devEnable.set(g_devMode);
+    perfEnable.set(g_devMode);
 
-	perfOverlay = new PerfOverlay();
+    perfOverlay = new PerfOverlay();
 }
 
 ImGuiHelper::~ImGuiHelper()
 {
-	for (auto tool : tools)
-	{
-		tool.reset();
-	}
+    for (auto tool : tools) {
+        tool.reset();
+    }
 
-	delete perfOverlay;
+    delete perfOverlay;
 }
 
 void ImGuiHelper::init(Window* win, World* w)
 {
-	world = w;
-	tools.push_back(std::shared_ptr<EntityInspector>(new EntityInspector(world)));
-	
-	ImGui::CreateContext();
-	ImGuiSDL::Initialize(win->getRenderer(), win->getWidth(), win->getHeight());
+    world = w;
+    tools.push_back(std::shared_ptr<EntityInspector>(new EntityInspector(world)));
 
-	SDL_RendererInfo info;
-	ImGuiIO& io = ImGui::GetIO();
-	SDL_GetRendererInfo(win->getRenderer(), &info);
-	io.BackendPlatformName = "SDL";
-	io.BackendRendererName = info.name;
+    ImGui::CreateContext();
+    ImGuiSDL::Initialize(win->getRenderer(), win->getWidth(), win->getHeight());
 
-	// Metal init does nothing other than init key and mouse handling
-	// imgui_sdl is handling rendering so this is perfect for us
-	ImGui_ImplSDL2_InitForMetal(win->getSDLWindow());
+    SDL_RendererInfo info;
+    ImGuiIO& io = ImGui::GetIO();
+    SDL_GetRendererInfo(win->getRenderer(), &info);
+    io.BackendPlatformName = "SDL";
+    io.BackendRendererName = info.name;
 
-	LOG("Init", "ImGui");
+    // Metal init does nothing other than init key and mouse handling
+    // imgui_sdl is handling rendering so this is perfect for us
+    ImGui_ImplSDL2_InitForMetal(win->getSDLWindow());
+
+    LOG("Init", "ImGui");
 }
 
 void ImGuiHelper::shutdown()
 {
-	ImGuiSDL::Deinitialize();
-	ImGui_ImplSDL2_Shutdown();
+    ImGuiSDL::Deinitialize();
+    ImGui_ImplSDL2_Shutdown();
 
-	LOG("Shutdown", "ImGui");
+    LOG("Shutdown", "ImGui");
 }
 
 void ImGuiHelper::newFrame(float delta, Window* win)
-{	
-	ImGui_ImplSDL2_NewFrame(win->getSDLWindow());
-	
-	ImGuiIO& io = ImGui::GetIO();
-	io.DeltaTime = delta;
-	
-	ImGui::NewFrame();
+{
+    ImGui_ImplSDL2_NewFrame(win->getSDLWindow());
 
-	// Always handle input and render console
-	console->handleInput();
-	console->render();
+    ImGuiIO& io = ImGui::GetIO();
+    io.DeltaTime = delta;
 
-	bool showPerf = perfEnable.getBool();
-	bool showDev = devEnable.getBool();
-	if (showPerf) {
-		perfOverlay->render(showDev);
-	}
-	
-	if (showDev) {
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("Tools"))
-			{
-				console->renderMenu();
+    ImGui::NewFrame();
 
-				ImGui::Separator();
+    // Always handle input and render console
+    console->handleInput();
+    console->render();
 
-				for (auto tool : tools)
-				{
-					tool->renderMenu();
-				}
-				ImGui::EndMenu();
-			}
+    bool showPerf = perfEnable.getBool();
+    bool showDev = devEnable.getBool();
+    if (showPerf) {
+        perfOverlay->render(showDev);
+    }
+
+    if (showDev) {
+        if (ImGui::BeginMainMenuBar()) {
+            if (ImGui::BeginMenu("Tools")) {
+                console->renderMenu();
+
+                ImGui::Separator();
+
+                for (auto tool : tools) {
+                    tool->renderMenu();
+                }
+                ImGui::EndMenu();
+            }
 #ifdef _DEBUG
-			if (ImGui::BeginMenu("Misc"))
-			{
-				ImGui::MenuItem("ImGui demo", NULL, &showDemo);
-				ImGui::EndMenu();
-			}
+            if (ImGui::BeginMenu("Misc")) {
+                ImGui::MenuItem("ImGui demo", NULL, &showDemo);
+                ImGui::EndMenu();
+            }
 #endif
-			ImGui::EndMainMenuBar();
-		}
+            ImGui::EndMainMenuBar();
+        }
 
-		for (auto tool : tools)
-		{
-			tool->handleInput();
-			tool->render();
-		}
+        for (auto tool : tools) {
+            tool->handleInput();
+            tool->render();
+        }
 
 #ifdef _DEBUG
-		if (showDemo)
-			ImGui::ShowDemoWindow(&showDemo);
+        if (showDemo)
+            ImGui::ShowDemoWindow(&showDemo);
 #endif
-	}
+    }
 }
 
 void ImGuiHelper::addTool(std::shared_ptr<ImGuiTool> tool)
 {
-	tools.push_back(tool);
+    tools.push_back(tool);
 }
 
 void ImGuiHelper::render()
 {
-	ImGui::Render();
-	ImGuiSDL::Render(ImGui::GetDrawData());
+    ImGui::Render();
+    ImGuiSDL::Render(ImGui::GetDrawData());
 }
 
 bool ImGuiHelper::wantsKeyboard()
 {
-	ImGuiIO& io = ImGui::GetIO();
-	return io.WantCaptureKeyboard;
+    ImGuiIO& io = ImGui::GetIO();
+    return io.WantCaptureKeyboard;
 }
 
 bool ImGuiHelper::wantsMouse()
 {
-	ImGuiIO& io = ImGui::GetIO();
-	return io.WantCaptureMouse;
+    ImGuiIO& io = ImGui::GetIO();
+    return io.WantCaptureMouse;
 }
-

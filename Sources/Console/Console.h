@@ -2,47 +2,46 @@
 
 #include "CVar.h"
 #include "IOutput.h"
-#include <map>
-#include <vector>
-#include <string>
-#include <memory>
 
-#define LOG(msg, src)			Console::getInstance().print(msg, src, OutputLevel::LEVEL_INFO)
-#define LOG_WARN(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_WARNING)
-#define LOG_ERROR(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_ERROR)
-#define LOG_FATAL(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_FATAL)
-#define LOG_DEBUG(msg, src)		Console::getInstance().print(msg, src, OutputLevel::LEVEL_DEBUG)
-#define LOG_VERBOSE(msg, src)	Console::getInstance().print(msg, src, OutputLevel::LEVEL_VERBOSE)
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#define LOG(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_INFO)
+#define LOG_WARN(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_WARNING)
+#define LOG_ERROR(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_ERROR)
+#define LOG_FATAL(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_FATAL)
+#define LOG_DEBUG(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_DEBUG)
+#define LOG_VERBOSE(msg, src) Console::getInstance().print(msg, src, OutputLevel::LEVEL_VERBOSE)
 
 typedef std::map<std::string, CVar*> CVarList;
 
-class Console
-{
+class Console {
 public:
-	static Console& getInstance();
-	~Console();
+    static Console& getInstance();
+    ~Console();
 
-	void shutdown();
+    void shutdown();
 
-	void registerVar(const std::string& name, CVar* cvar);
-	void registerOutput(std::shared_ptr<IOutput> output);
+    void registerVar(const std::string& name, CVar* cvar);
+    void registerOutput(std::shared_ptr<IOutput> output);
 
-	std::string exec(const std::string& command);
+    std::string exec(const std::string& command);
 
-	// Logging stuff
-	void print(const std::string& text, const std::string& source, OutputLevel level);
+    // Logging stuff
+    void print(const std::string& text, const std::string& source, OutputLevel level);
 
-	CVarList dumpVars(CVarFlags flags = CVAR_PERSIST);
-	std::string getCfgFile();
-	std::vector<std::string> autocomplete(std::string userInput);
+    CVarList dumpVars(CVarFlags flags = CVAR_PERSIST);
+    std::string getCfgFile();
+    std::vector<std::string> autocomplete(std::string userInput);
 
 private:
-	Console();
+    Console();
 
-	std::string parse(const std::string& command);
-	std::string runCommand(const std::string& opcode, const std::string& operand);
+    std::string parse(const std::string& command);
+    std::string runCommand(const std::string& opcode, const std::string& operand);
 
-	CVarList cvars;
-	std::vector<std::shared_ptr<IOutput>> outputs;
+    CVarList cvars;
+    std::vector<std::shared_ptr<IOutput>> outputs;
 };
-

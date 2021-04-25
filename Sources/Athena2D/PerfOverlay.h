@@ -1,16 +1,14 @@
 #pragma once
 
-class PerfOverlay
-{
+class PerfOverlay {
 public:
-	PerfOverlay();
+    PerfOverlay();
 
-	void render(bool hasMenu);
+    void render(bool hasMenu);
 
 private:
-	float ftCounter = 0.0f;
+    float ftCounter = 0.0f;
 
-	float lastFPS = 0.0f;
-	float lastFT = 0.0f;
+    float lastFPS = 0.0f;
+    float lastFT = 0.0f;
 };
-

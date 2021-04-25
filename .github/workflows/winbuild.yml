@@ -1,0 +1,24 @@
+name: Windows Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup environment
+      uses: ilammy/msvc-dev-cmd@v1
+    
+    - name: Build
+      shell: cmd
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: call .\WinBuild.bat
+      
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2.2.3
+      with:
+        name: Athena-Win-x64
+        path: build/bin/Release/Athena-Win-x64.zip

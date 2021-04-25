@@ -1,0 +1,46 @@
+name: Docs
+
+defaults:
+  run:
+    working-directory: Docs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Docs/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Cache dependencies
+      id: cache-docs-yarn
+      uses: actions/cache@v2
+      with:
+        path: |
+          .yarn
+          node_modules
+        key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+    - name: Download dependencies
+      if: steps.cache-docs-yarn.outputs.cache-hit != 'true'
+      run: yarn
+    
+    - name: Build
+      run: yarn build
+      
+    - name: Deploy
+      uses: nwtgck/actions-netlify@v1.1
+      with:
+        publish-dir: build
+        deploy-message: "Deploy from GitHub Actions"
+        production-deploy: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      timeout-minutes: 2

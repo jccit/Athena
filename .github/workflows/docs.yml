@@ -9,6 +9,7 @@ on:
     branches: [ main ]
     paths:
       - 'Docs/**'
+      - '.github/workflows/docs.yml'
 
 jobs:
   deploy:
@@ -23,9 +24,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          .yarn
-          node_modules
-        key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          Docs/.yarn
+          Docs/node_modules
+        key: yarn-${{ runner.os }}-${{ hashFiles('Docs/yarn.lock') }}
 
     - name: Download dependencies
       if: steps.cache-docs-yarn.outputs.cache-hit != 'true'
@@ -37,7 +38,7 @@ jobs:
     - name: Deploy
       uses: nwtgck/actions-netlify@v1.1
       with:
-        publish-dir: build
+        publish-dir: Docs/build
         deploy-message: "Deploy from GitHub Actions"
         production-deploy: true
       env:

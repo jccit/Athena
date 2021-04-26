@@ -76,4 +76,8 @@ ThirdParty/SDL2*
 # CMake
 build/
 out/
+cmake-*/
 CMakeSettings.json
+
+# CLion
+.idea/

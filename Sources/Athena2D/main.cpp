@@ -23,11 +23,27 @@ void emLoop()
 int main(int argc, char* argv[])
 {
 #ifndef __EMSCRIPTEN__
-    argh::parser cmdl(argv);
+    argh::parser cmdl({"-w", "-h"});
+    cmdl.parse(argv);
 
     // Check for dev mode
     if (cmdl[{ "-dev" }])
         g_devMode = true;
+
+    if (cmdl("-w")) {
+        try {
+            int overrideWidth = std::stoi(cmdl("-w").str());
+            g_overrideWidth = overrideWidth;
+        } catch (std::invalid_argument &e) {}
+    }
+
+    if (cmdl("-h")) {
+        try {
+            int overrideHeight = std::stoi(cmdl("-h").str());
+            g_overrideHeight = overrideHeight;
+        } catch (std::invalid_argument &e) {}
+    }
+
 #else
     g_devMode = true;
 #endif

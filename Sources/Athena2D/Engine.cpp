@@ -66,6 +66,14 @@ int Engine::init()
     }
 #endif
 
+    if (g_overrideWidth > 0) {
+        Console::getInstance().exec("r_width " + std::to_string(g_overrideWidth));
+    }
+
+    if (g_overrideHeight > 0) {
+        Console::getInstance().exec("r_height " + std::to_string(g_overrideHeight));
+    }
+
     LOG("Init", "Engine");
 
     SDL_Init(SDL_INIT_VIDEO);
